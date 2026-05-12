@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "../config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -17,12 +18,10 @@ if (!MONGO_URI) {
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello from backend on port 5900!" });
-});
+app.use("/users", userRoutes);
 
-app.get("/test", (req, res) => {
-  res.json({ message: "Testing" });
+app.get("/", (req, res) => {
+  res.json({ message: "Hello from backend!" });
 });
 
 connectDB(MONGO_URI)
