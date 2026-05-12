@@ -9,28 +9,16 @@ export default function Register() {
     formState: { errors },
   } = useForm();
 
-  const [message, setMessage] = useState("");
-
-  // Just testing axios connection
-  useEffect(() => {
-    axios
-      .get("http://localhost:5900/test")
-      .then((response) => {
-        setMessage(response.data.message);
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage("Error: " + err.message);
-      });
-  }, []);
-
   const onSubmit = (data) => {
     console.log("Form Data:", data);
+
+    axios.post("http://localhost:5900/users", data).catch((err) => {
+      console.error(err);
+    });
   };
 
   return (
     <div className="flex items-center justify-center bg-gray-50 p-4">
-      <p className="text-center text-gray-500">Message: {message}</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-5 w-150 bg-white p-6 rounded-lg shadow-md"
