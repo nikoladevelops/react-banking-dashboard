@@ -1,14 +1,27 @@
+import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-export default function Login() {
+export default function Login({ setUser }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("/api/auth/login", data);
+      localStorage.setItem("token", res.data.token);
+      setUser(res.data);
+      navigate("/profile");
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
 
   return (
@@ -58,6 +71,7 @@ export default function Login() {
             </span>
           )}
         </div>
+        {error && <span className="text-red-500 text-sm">{error}</span>}
 
         <button
           type="submit"

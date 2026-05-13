@@ -20,6 +20,13 @@ export const getUserById = async (id: string): Promise<IUser | null> => {
   return user;
 };
 
+export const getUserByUsername = async (
+  username: string,
+): Promise<IUser | null> => {
+  const user = await User.findOne({ username });
+  return user;
+};
+
 export const updateUser = async (
   id: string,
   username?: string,
