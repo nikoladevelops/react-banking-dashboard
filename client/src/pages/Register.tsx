@@ -1,20 +1,28 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-export default function Register() {
+export default function Register({ setUser }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const [error, setError] = useState(null);
 
-    axios.post("http://localhost:5900/users", data).catch((err) => {
-      console.error(err);
-    });
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("/api/auth/register", data);
+      localStorage.setItem("token", res.data.token);
+      setUser(res.data);
+      navigate("/profile");
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
 
   return (
@@ -64,7 +72,7 @@ export default function Register() {
             </span>
           )}
         </div>
-
+        {error && <span className="text-red-500 text-sm">{error}</span>}
         <button
           type="submit"
           className="bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors"
