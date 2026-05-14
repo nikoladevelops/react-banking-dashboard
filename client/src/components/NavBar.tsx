@@ -1,14 +1,19 @@
 // NavBar.tsx
 import { Link, useNavigate } from "react-router";
 import fibankLogo from "../assets/fibank-logo.png";
+import api from "../api/axiosInstance.js";
 
 export default function NavBar({ user, setUser }) {
   const navigate = useNavigate();
 
-  const logOut = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/");
+  const logOut = async () => {
+    try {
+      await api.post("/auth/logout");
+      setUser(null);
+      navigate("/");
+    } catch (err) {
+      console.error("Failed to log out. " + err.message);
+    }
   };
 
   return (

@@ -1,0 +1,32 @@
+opencollection: 1.0.0
+
+info:
+  name: api-react-banking-dashboard
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body._id
+        method: jsonq
+      variable:
+        name: userId
+        scope: runtime
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
