@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axiosInstance.js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -16,8 +16,7 @@ export default function Register({ setUser }) {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("/api/auth/register", data);
-      localStorage.setItem("token", res.data.token);
+      const res = await api.post("/auth/register", data);
       setUser(res.data);
       navigate("/profile");
     } catch (err) {

@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "./api/axiosInstance.js";
 import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
 
@@ -12,21 +12,12 @@ function App() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        try {
-          const res = await axios.get("api/auth/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          setUser(res.data);
-        } catch (err) {
-          console.error("Failed to fetch user data. " + err.message);
-          localStorage.removeItem("token");
-        }
+      try {
+        const res = await api.get("/auth/me");
+        setUser(res.data);
+      } catch (err) {
+        // Not logged in or token expired
+        setUser(null);
       }
     };
 

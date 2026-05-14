@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export interface AuthRequest extends Request {
   user?: {
-    userId: string;
+    id: string;
     username: string;
   };
 }
@@ -21,29 +21,23 @@ export const protect = async (
   res: Response,
   next: NextFunction,
 ) => {
-  let token: string | undefined;
+  const token: string | undefined = req.cookies?.token;
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized, no token provided",
+    });
+  }
+
   try {
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    }
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized, no token provided",
-      });
-    }
-
     const decoded = jwt.verify(token, getJwtSecret()) as {
-      userId: string;
+      id: string;
       username: string;
     };
 
     req.user = {
-      userId: decoded.userId,
+      id: decoded.id,
       username: decoded.username,
     };
 
