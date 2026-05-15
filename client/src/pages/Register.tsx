@@ -2,8 +2,11 @@ import api from "../api/axiosInstance.js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function Register({ setUser }) {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -30,11 +33,14 @@ export default function Register({ setUser }) {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-5 w-150 bg-white p-6 rounded-lg shadow-md"
       >
-        <h3 className="text-xl font-bold text-center">Регистрация</h3>
+        <h3 className="text-xl font-bold text-center">
+          {" "}
+          {t("reg-form.register")}
+        </h3>
 
         <div className="flex flex-col gap-1">
           <label htmlFor="username" className="font-medium text-gray-700">
-            Потребител
+            {t("reg-form.username")}
           </label>
           <input
             id="username"
@@ -54,7 +60,7 @@ export default function Register({ setUser }) {
 
         <div className="flex flex-col gap-1">
           <label htmlFor="password" className="font-medium text-gray-700">
-            Парола
+            {t("reg-form.password")}
           </label>
           <input
             id="password"
@@ -76,7 +82,7 @@ export default function Register({ setUser }) {
           type="submit"
           className="bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors"
         >
-          Регистрация
+          {t("reg-form.register")}
         </button>
       </form>
     </div>

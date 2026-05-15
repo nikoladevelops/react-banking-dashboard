@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Home",
+    "mobileApp": "Mobile App",
+    "changesTariff": "Changes in OU and tariff",
+    "help": "Help",
+    "profile": "Profile",
+    "logout": "Logout",
+    "register": "Register",
+    "login": "Login"
+  },
+  "reg-form": {
+    "register": "Register",
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "login-form": {
+    "login": "Login",
+    "username": "Username",
+    "password": "Password"
+  }
+}

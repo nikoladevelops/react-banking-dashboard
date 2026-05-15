@@ -2,8 +2,11 @@ import api from "../api/axiosInstance.js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function Login({ setUser }) {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -29,11 +32,13 @@ export default function Login({ setUser }) {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-5 w-150 bg-white p-6 rounded-lg shadow-md"
       >
-        <h3 className="text-xl font-bold text-center">Вход</h3>
+        <h3 className="text-xl font-bold text-center">
+          {t("login-form.login")}
+        </h3>
 
         <div className="flex flex-col gap-1">
           <label htmlFor="username" className="font-medium text-gray-700">
-            Потребител
+            {t("login-form.username")}
           </label>
           <input
             id="username"
@@ -53,7 +58,7 @@ export default function Login({ setUser }) {
 
         <div className="flex flex-col gap-1">
           <label htmlFor="password" className="font-medium text-gray-700">
-            Парола
+            {t("login-form.password")}
           </label>
           <input
             id="password"
@@ -76,7 +81,7 @@ export default function Login({ setUser }) {
           type="submit"
           className="bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors"
         >
-          Вход
+          {t("login-form.login")}
         </button>
       </form>
     </div>

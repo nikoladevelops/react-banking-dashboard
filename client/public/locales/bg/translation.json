@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Към сайта",
+    "mobileApp": "Мобилно приложение",
+    "changesTariff": "Промени в ОУ и тарифа",
+    "help": "Помощ",
+    "profile": "Профил",
+    "logout": "Изход",
+    "register": "Регистрация",
+    "login": "Вход"
+  },
+  "reg-form": {
+    "register": "Регистрация",
+    "username": "Потребителско име",
+    "password": "Парола",
+    "confirmPassword": "Потвърди парола"
+  },
+  "login-form": {
+    "login": "Вход",
+    "username": "Потребителско име",
+    "password": "Парола"
+  }
+}
