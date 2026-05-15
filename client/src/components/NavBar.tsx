@@ -2,8 +2,12 @@
 import { Link, useNavigate } from "react-router";
 import fibankLogo from "../assets/fibank-logo.png";
 import api from "../api/axiosInstance.js";
+import LanguageSwitcher from "./LanguageSwitcher.js";
+import { useTranslation } from "react-i18next";
 
 export default function NavBar({ user, setUser }) {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -28,35 +32,32 @@ export default function NavBar({ user, setUser }) {
           </div>
 
           <div className="flex justify-center gap-8">
-            <Link
-              to="/"
-              className="flex items-center hover:text-blue-600 transition-colors"
-            >
-              Български
-            </Link>
+            <div className="flex items-center hover:text-blue-600 transition-colors">
+              <LanguageSwitcher />
+            </div>
             <Link
               to="/about"
               className="flex items-center hover:text-blue-600 transition-colors"
             >
-              Към сайта
+              {t("nav.home")}
             </Link>
             <Link
               to="/mobile"
               className="flex items-center hover:text-blue-600 transition-colors"
             >
-              Мобилно приложение
+              {t("nav.mobileApp")}
             </Link>
             <Link
               to="/changes"
               className="flex items-center hover:text-blue-600 transition-colors"
             >
-              Промени в ОУ и тарифа
+              {t("nav.changesTariff")}
             </Link>
             <Link
               to="/help"
               className="flex items-center hover:text-blue-600 transition-colors"
             >
-              Помощ
+              {t("nav.help")}
             </Link>
 
             {user && (
@@ -64,7 +65,7 @@ export default function NavBar({ user, setUser }) {
                 to="/profile"
                 className="flex items-center hover:text-blue-600 transition-colors"
               >
-                Профил
+                {t("nav.profile")}
               </Link>
             )}
           </div>
@@ -76,13 +77,13 @@ export default function NavBar({ user, setUser }) {
                   to="/register"
                   className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
                 >
-                  РЕГИСТРАЦИЯ
+                  {t("nav.register")}
                 </Link>
                 <Link
                   to="/login"
                   className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
                 >
-                  ВХОД
+                  {t("nav.login")}
                 </Link>
               </div>
             </div>
@@ -91,7 +92,7 @@ export default function NavBar({ user, setUser }) {
               onClick={logOut}
               className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
             >
-              ИЗХОД
+              {t("nav.logout")}
             </button>
           )}
         </div>
