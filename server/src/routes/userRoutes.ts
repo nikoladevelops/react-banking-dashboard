@@ -1,4 +1,7 @@
 import { Router } from "express";
+import mongoose from "mongoose";
+import { ErrorKeys } from "../constants/errorKeys.js";
+import { errorResponse, successResponse } from "../utils/response.js";
 import {
   getAllUsers,
   getUserById,
@@ -10,42 +13,121 @@ import {
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const users = await getAllUsers();
-  return res.json(users);
+  try {
+    const users = await getAllUsers();
+    res.status(200).json(successResponse(users));
+  } catch (error: any) {
+    console.error("Get all users error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
+  }
 });
 
 router.get("/:id", async (req, res) => {
-  const user = await getUserById(req.params.id);
-  return res.json(user);
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json(errorResponse(ErrorKeys.users.invalidUserId));
+    }
+
+    const user = await getUserById(id);
+    if (!user) {
+      return res.status(404).json(errorResponse(ErrorKeys.users.userNotFound));
+    }
+
+    res.status(200).json(successResponse(user));
+  } catch (error: any) {
+    console.error("Get user by id error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
+  }
 });
 
 router.post("/", async (req, res) => {
-  const user = await createUser(req.body.username, req.body.password);
-  return res.json(user);
+  try {
+    const { username, password } = req.body;
+
+    if (!username) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.users.usernameRequired));
+    }
+
+    if (!password) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.users.passwordRequired));
+    }
+
+    const user = await createUser(username, password);
+    res.status(201).json(successResponse(user));
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.usernameAlreadyTaken));
+    }
+    console.error("Create user error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
+  }
 });
 
 router.patch("/:id", async (req, res) => {
-  const user = await updateUser(
-    req.params.id,
-    req.body.username,
-    req.body.password,
-  );
+  try {
+    const { id } = req.params;
+    const { username, password } = req.body;
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json(errorResponse(ErrorKeys.users.invalidUserId));
+    }
+
+    if (!username) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.users.usernameRequired));
+    }
+
+    if (!password) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.users.passwordRequired));
+    }
+
+    const user = await updateUser(id, username, password);
+
+    if (!user) {
+      return res.status(404).json(errorResponse(ErrorKeys.users.userNotFound));
+    }
+
+    res.status(200).json(successResponse(user));
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.usernameAlreadyTaken));
+    }
+    console.error("Update user error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
   }
-
-  return res.json("Success, updated user");
 });
 
 router.delete("/:id", async (req, res) => {
-  const user = await deleteUser(req.params.id);
+  try {
+    const { id } = req.params;
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json(errorResponse(ErrorKeys.users.invalidUserId));
+    }
+
+    const user = await deleteUser(id);
+
+    if (!user) {
+      return res.status(404).json(errorResponse(ErrorKeys.users.userNotFound));
+    }
+
+    res.status(200).json(successResponse(user));
+  } catch (error: any) {
+    console.error("Delete user error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
   }
-
-  return res.json("Success, deleted user");
 });
 
 export default router;

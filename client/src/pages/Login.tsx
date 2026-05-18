@@ -1,28 +1,50 @@
 import api from "../api/axiosInstance.js";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
 export default function Login({ setUser }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const prevLanguage = useRef(i18n.language);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    trigger,
+  } = useForm<LoginForm>();
 
-  const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (prevLanguage.current !== i18n.language) {
+      const fields = Object.keys(errors) as (keyof LoginForm)[];
+      if (fields.length > 0) {
+        trigger(fields);
+      }
+
+      prevLanguage.current = i18n.language;
+      return;
+    }
+  }, [i18n.language, trigger, errors]);
 
   const onSubmit = async (data) => {
     try {
       const res = await api.post("/auth/login", data);
-      setUser(res.data);
+      setUser(res.data.data);
       navigate("/profile");
     } catch (err) {
-      setError(err.response.data.message);
+      setErrorCode(
+        err.response?.data?.errorCode || "server.internalServerError",
+      );
     }
   };
 
@@ -44,8 +66,11 @@ export default function Login({ setUser }) {
             id="username"
             type="text"
             {...register("username", {
-              required: "Username is required",
-              minLength: { value: 3, message: "Minimum 3 characters" },
+              required: t("errors.auth.usernameRequired"),
+              minLength: {
+                value: 3,
+                message: t("errors.generic.minLength", { count: 3 }),
+              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -64,8 +89,11 @@ export default function Login({ setUser }) {
             id="password"
             type="password"
             {...register("password", {
-              required: "Password is required",
-              minLength: { value: 6, message: "Minimum 6 characters" },
+              required: t("errors.auth.passwordRequired"),
+              minLength: {
+                value: 6,
+                message: t("errors.generic.minLength", { count: 6 }),
+              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -75,7 +103,12 @@ export default function Login({ setUser }) {
             </span>
           )}
         </div>
-        {error && <span className="text-red-500 text-sm">{error}</span>}
+
+        {errorCode && (
+          <span className="text-red-500 text-sm">
+            {t(`errors.${errorCode}`)}
+          </span>
+        )}
 
         <button
           type="submit"

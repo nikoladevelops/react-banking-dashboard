@@ -1,5 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { verifyToken } from "../utils/jwtHelper.js";
+import { errorResponse } from "../utils/response.js";
+import { ErrorKeys } from "../constants/errorKeys.js";
 
 export interface AuthRequest extends Request {
   user?: {
@@ -7,14 +9,6 @@ export interface AuthRequest extends Request {
     username: string;
   };
 }
-
-const getJwtSecret = (): string => {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables");
-  }
-  return secret;
-};
 
 export const protect = async (
   req: AuthRequest,
@@ -24,17 +18,11 @@ export const protect = async (
   const token: string | undefined = req.cookies?.token;
 
   if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Not authorized, no token provided",
-    });
+    return res.status(401).json(errorResponse(ErrorKeys.auth.tokenMissing));
   }
 
   try {
-    const decoded = jwt.verify(token, getJwtSecret()) as {
-      id: string;
-      username: string;
-    };
+    const decoded = verifyToken(token);
 
     req.user = {
       id: decoded.id,
@@ -43,10 +31,6 @@ export const protect = async (
 
     next();
   } catch (error: any) {
-    return res.status(401).json({
-      success: false,
-      message: "Not authorized, token failed",
-      error: error.message,
-    });
+    return res.status(401).json(errorResponse(ErrorKeys.auth.tokenInvalid));
   }
 };
