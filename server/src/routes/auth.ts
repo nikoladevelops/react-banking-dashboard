@@ -1,44 +1,54 @@
-import express, { type CookieOptions } from "express";
+import express from "express";
 import { createUser, getUserByUsername } from "../services/userService.js";
 import { protect, type AuthRequest } from "../middleware/auth.js";
-import jwt from "jsonwebtoken";
+import { ErrorKeys } from "../constants/errorKeys.js";
+import { errorResponse, successResponse } from "../utils/response.js";
+import { generateToken, getJwtCookieOptions } from "../utils/jwtHelper.js";
 
 const router = express.Router();
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
-  maxAge: 60 * 60 * 1000, // 1 hour
-};
 
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    if (!username || !password) {
+    if (!username) {
       return res
         .status(400)
-        .json({ message: "Username and password are required" });
+        .json(errorResponse(ErrorKeys.auth.usernameMissing));
+    }
+
+    if (!password) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.passwordRequired));
     }
 
     const existingUser = await getUserByUsername(username);
     if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.usernameAlreadyTaken));
     }
 
     const newUser = await createUser(username, password);
-    const token = generateToken(newUser._id.toString(), newUser.username);
-
-    res.cookie("token", token, cookieOptions);
-
-    res.status(201).json({
-      message: "User registered successfully",
-      id: newUser._id,
+    const token = generateToken({
+      id: newUser._id.toString(),
       username: newUser.username,
     });
+
+    res.cookie("token", token, getJwtCookieOptions());
+
+    res
+      .status(201)
+      .json(successResponse({ id: newUser._id, username: newUser.username }));
   } catch (error: any) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.usernameAlreadyTaken));
+    }
+    console.error("Registration error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
   }
 });
 
@@ -46,54 +56,58 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    if (!username || !password) {
+    if (!username) {
       return res
         .status(400)
-        .json({ message: "Username and password are required" });
+        .json(errorResponse(ErrorKeys.auth.usernameMissing));
+    }
+
+    if (!password) {
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.passwordRequired));
     }
 
     const user = await getUserByUsername(username);
     if (!user) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.invalidCredentials));
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res
+        .status(400)
+        .json(errorResponse(ErrorKeys.auth.invalidCredentials));
     }
 
-    const token = generateToken(user._id.toString(), user.username);
-
-    res.cookie("token", token, cookieOptions);
-
-    res.status(200).json({
-      message: "Login successful",
-      id: user._id,
+    const token = generateToken({
+      id: user._id.toString(),
       username: user.username,
     });
+
+    res.cookie("token", token, getJwtCookieOptions());
+
+    res.status(200).json(
+      successResponse({
+        id: user._id,
+        username: user.username,
+      }),
+    );
   } catch (error: any) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Login error:", error);
+    res.status(500).json(errorResponse(ErrorKeys.server.internalServerError));
   }
 });
 
 router.post("/logout", (req, res) => {
-  res.clearCookie("token", cookieOptions);
-  res.status(200).json({ message: "Logout successful" });
+  res.clearCookie("token", getJwtCookieOptions());
+  res.status(200).json(successResponse({ message: "Logged out successfully" }));
 });
 
 router.get("/me", protect, async (req: AuthRequest, res) => {
-  res.status(200).json(req.user);
+  res.status(200).json(successResponse(req.user));
 });
-
-const generateToken = (id: string, username: string) => {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined");
-  }
-
-  return jwt.sign({ id: id, username }, secret, {
-    expiresIn: "1h",
-  });
-};
 
 export default router;

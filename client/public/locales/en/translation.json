@@ -19,5 +19,28 @@
     "login": "Login",
     "username": "Username",
     "password": "Password"
+  },
+  "errors": {
+    "generic": {
+      "minLength": "Minimum length is {{count}}"
+    },
+    "auth": {
+      "usernameRequired": "Username is required",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Wrong username or password",
+      "usernameAlreadyTaken": "Username is already taken",
+      "tokenMissing": "Token is missing",
+      "tokenInvalid": "Token is invalid"
+    },
+    "users": {
+      "userNotFound": "User not found",
+      "invalidUserId": "Invalid user ID",
+      "usernameRequired": "Username is required"
+    },
+    "validation": {},
+    "payment": {},
+    "server": {
+      "internalServerError": "Internal server error"
+    }
   }
 }

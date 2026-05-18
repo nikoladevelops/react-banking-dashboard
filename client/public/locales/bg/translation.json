@@ -1,6 +1,6 @@
 {
   "nav": {
-    "home": "Към сайта",
+    "home": "Начало",
     "mobileApp": "Мобилно приложение",
     "changesTariff": "Промени в ОУ и тарифа",
     "help": "Помощ",
@@ -13,11 +13,34 @@
     "register": "Регистрация",
     "username": "Потребителско име",
     "password": "Парола",
-    "confirmPassword": "Потвърди парола"
+    "confirmPassword": "Потвърдете паролата"
   },
   "login-form": {
     "login": "Вход",
     "username": "Потребителско име",
     "password": "Парола"
+  },
+  "errors": {
+    "generic": {
+      "minLength": "Минималната дължина е {{count}}"
+    },
+    "auth": {
+      "usernameRequired": "Потребителското име е задължително",
+      "passwordRequired": "Паролата е задължителна",
+      "invalidCredentials": "Грешно потребителско име или парола",
+      "usernameAlreadyTaken": "Потребителското име вече е заето",
+      "tokenMissing": "Липсва токен",
+      "tokenInvalid": "Невалиден токен"
+    },
+    "users": {
+      "userNotFound": "Потребителят не е намерен",
+      "invalidUserId": "Невалиден потребителски идентификатор",
+      "usernameRequired": "Потребителското име е задължително"
+    },
+    "validation": {},
+    "payment": {},
+    "server": {
+      "internalServerError": "Вътрешна грешка в сървъра"
+    }
   }
 }

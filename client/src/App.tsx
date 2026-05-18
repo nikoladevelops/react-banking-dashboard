@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import api from "./api/axiosInstance.js";
 import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
+import { Navigate } from "react-router";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -14,8 +15,8 @@ function App() {
     const fetchUser = async () => {
       try {
         const res = await api.get("/auth/me");
-        setUser(res.data);
-      } catch (err) {
+        setUser(res.data.data);
+      } catch {
         // Not logged in or token expired
         setUser(null);
       }
@@ -37,7 +38,12 @@ function App() {
             <Route path="/help" element={<div>Help Page</div>} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register setUser={setUser} />} />
-            <Route path="/profile" element={<Profile user={user} />} />
+            <Route
+              path="/profile"
+              element={
+                user ? <Profile user={user} /> : <Navigate to="/login" />
+              }
+            />
           </Routes>
         </div>
       </BrowserRouter>

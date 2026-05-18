@@ -1,29 +1,49 @@
 import api from "../api/axiosInstance.js";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
+interface RegisterForm {
+  username: string;
+  password: string;
+}
+
 export default function Register({ setUser }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const prevLanguage = useRef(i18n.language);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    trigger,
+  } = useForm<RegisterForm>();
 
-  const [error, setError] = useState(null);
-
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (prevLanguage.current !== i18n.language) {
+      const fields = Object.keys(errors) as (keyof RegisterForm)[];
+      if (fields.length > 0) {
+        trigger(fields);
+      }
+
+      prevLanguage.current = i18n.language;
+      return;
+    }
+  }, [i18n.language, trigger, errors]);
 
   const onSubmit = async (data) => {
     try {
       const res = await api.post("/auth/register", data);
-      setUser(res.data);
+      setUser(res.data.data);
       navigate("/profile");
     } catch (err) {
-      setError(err.response.data.message);
+      setErrorCode(
+        err.response?.data?.errorCode || "server.internalServerError",
+      );
     }
   };
 
@@ -34,7 +54,6 @@ export default function Register({ setUser }) {
         className="flex flex-col gap-5 w-150 bg-white p-6 rounded-lg shadow-md"
       >
         <h3 className="text-xl font-bold text-center">
-          {" "}
           {t("reg-form.register")}
         </h3>
 
@@ -46,8 +65,11 @@ export default function Register({ setUser }) {
             id="username"
             type="text"
             {...register("username", {
-              required: "Username is required",
-              minLength: { value: 3, message: "Minimum 3 characters" },
+              required: t("errors.auth.usernameRequired"),
+              minLength: {
+                value: 3,
+                message: t("errors.generic.minLength", { count: 3 }),
+              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -66,8 +88,11 @@ export default function Register({ setUser }) {
             id="password"
             type="password"
             {...register("password", {
-              required: "Password is required",
-              minLength: { value: 6, message: "Minimum 6 characters" },
+              required: t("errors.auth.passwordRequired"),
+              minLength: {
+                value: 6,
+                message: t("errors.generic.minLength", { count: 6 }),
+              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -77,7 +102,13 @@ export default function Register({ setUser }) {
             </span>
           )}
         </div>
-        {error && <span className="text-red-500 text-sm">{error}</span>}
+
+        {errorCode && (
+          <span className="text-red-500 text-sm">
+            {t(`errors.${errorCode}`)}
+          </span>
+        )}
+
         <button
           type="submit"
           className="bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors"
