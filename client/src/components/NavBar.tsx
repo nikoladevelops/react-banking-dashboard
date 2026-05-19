@@ -1,9 +1,15 @@
-// NavBar.tsx
 import { Link, useNavigate } from "react-router";
-import fibankLogo from "../assets/fibank-logo.png";
+import FibankLogo from "../assets/navbar/fibank-logo-white.svg?react";
+import desktop from "../assets/navbar/desktop.svg?react";
+import android from "../assets/navbar/android.svg?react";
+import apple from "../assets/navbar/apple.svg";
+import info from "../assets/navbar/info.svg";
+import menuBurger from "../assets/navbar/menu-burger.svg";
+import clipboard from "../assets/navbar/clipboard.svg";
 import api from "../api/axiosInstance.js";
 import LanguageSwitcher from "./LanguageSwitcher.js";
 import { useTranslation } from "react-i18next";
+import DarkModeToggle from "./DarkModeToggle.js";
 
 export default function NavBar({ user, setUser }) {
   const { t } = useTranslation();
@@ -21,82 +27,60 @@ export default function NavBar({ user, setUser }) {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        {" "}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center text-sm font-medium text-gray-700 py-3">
-          <div className="justify-self-start">
-            <Link to="/">
-              <img src={fibankLogo} alt="FiBank Logo" className="w-35" />
-            </Link>
+    <div>
+      <nav className="flex flex-wrap justify-evenly items-center bg-white dark:bg-black border-b border-gray-200 min-h-35">
+        <div className="flex items-center justify-center">
+          <Link to="/" className="inline-flex items-center justify-center">
+            <FibankLogo className="w-45 h-10 text-black dark:text-white" />
+          </Link>
+        </div>
+
+        <div className="flex justify-center gap-5 mr-5 ml-5">
+          <div className="hover-themed transition-colors">
+            <LanguageSwitcher />
           </div>
+          <Link to="/" className="hover-themed transition-colors">
+            {t("nav.home")}
+          </Link>
+          <Link to="/mobile" className=" hover-themed transition-colors">
+            {t("nav.mobileApp")}
+          </Link>
+          <Link to="/changes" className=" hover-themed transition-colors">
+            {t("nav.changesTariff")}
+          </Link>
+          <Link to="/help" className=" hover-themed transition-colors">
+            {t("nav.help")}
+          </Link>
 
-          <div className="flex justify-center gap-8">
-            <div className="flex items-center hover:text-blue-600 transition-colors">
-              <LanguageSwitcher />
-            </div>
+          {user && (
             <Link
-              to="/about"
-              className="flex items-center hover:text-blue-600 transition-colors"
+              to="/profile"
+              className="flex items-center hover-themed transition-colors"
             >
-              {t("nav.home")}
+              {t("nav.profile")}
             </Link>
-            <Link
-              to="/mobile"
-              className="flex items-center hover:text-blue-600 transition-colors"
-            >
-              {t("nav.mobileApp")}
-            </Link>
-            <Link
-              to="/changes"
-              className="flex items-center hover:text-blue-600 transition-colors"
-            >
-              {t("nav.changesTariff")}
-            </Link>
-            <Link
-              to="/help"
-              className="flex items-center hover:text-blue-600 transition-colors"
-            >
-              {t("nav.help")}
-            </Link>
-
-            {user && (
-              <Link
-                to="/profile"
-                className="flex items-center hover:text-blue-600 transition-colors"
-              >
-                {t("nav.profile")}
-              </Link>
-            )}
-          </div>
-
-          {!user ? (
-            <div className="justify-self-end">
-              <div className="flex gap-10">
-                <Link
-                  to="/register"
-                  className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
-                >
-                  {t("nav.register")}
-                </Link>
-                <Link
-                  to="/login"
-                  className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
-                >
-                  {t("nav.login")}
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <button
-              onClick={logOut}
-              className="text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors whitespace-nowrap"
-            >
-              {t("nav.logout")}
-            </button>
           )}
         </div>
-      </div>
-    </nav>
+
+        {!user ? (
+          <div className="flex gap-5 justify-center items-center">
+            <Link to="/register" className=" hover-themed transition-colors">
+              {t("nav.register")}
+            </Link>
+            <Link to="/login" className="hover-themed transition-colors">
+              {t("nav.login")}
+            </Link>
+            <DarkModeToggle />
+          </div>
+        ) : (
+          <div className="flex gap-5 justify-center items-center">
+            <button onClick={logOut} className="hover-themed transition-colors">
+              {t("nav.logout")}
+            </button>
+            <DarkModeToggle />
+          </div>
+        )}
+      </nav>
+    </div>
   );
 }
