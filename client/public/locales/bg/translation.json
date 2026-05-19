@@ -1,4 +1,8 @@
 {
+  "generic": {
+    "lightMode": "Светла Тема",
+    "darkMode": "Тъмна Тема"
+  },
   "nav": {
     "home": "Начало",
     "mobileApp": "Мобилно приложение",

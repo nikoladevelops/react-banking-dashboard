@@ -28,7 +28,7 @@ function App() {
   return (
     <Suspense fallback={<div>Loading translations...</div>}>
       <BrowserRouter>
-        <div className=" bg-gray-50">
+        <div className="text-black dark:text-white">
           <NavBar user={user} setUser={setUser} />
           <Routes>
             <Route path="/" element={<Home />} />

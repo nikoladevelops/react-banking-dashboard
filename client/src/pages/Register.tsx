@@ -48,17 +48,20 @@ export default function Register({ setUser }) {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 p-4">
+    <div className="flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 w-150 bg-white p-6 rounded-lg shadow-md"
+        className="flex flex-col gap-5 w-150 bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md"
       >
         <h3 className="text-xl font-bold text-center">
           {t("reg-form.register")}
         </h3>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="username" className="font-medium text-gray-700">
+          <label
+            htmlFor="username"
+            className="font-medium text-gray-700 dark:text-white"
+          >
             {t("reg-form.username")}
           </label>
           <input
@@ -81,7 +84,10 @@ export default function Register({ setUser }) {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="password" className="font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="font-medium text-gray-700 dark:text-white"
+          >
             {t("reg-form.password")}
           </label>
           <input

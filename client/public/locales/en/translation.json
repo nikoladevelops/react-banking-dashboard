@@ -1,4 +1,8 @@
 {
+  "generic": {
+    "lightMode": "Light Theme",
+    "darkMode": "Dark Theme"
+  },
   "nav": {
     "home": "Home",
     "mobileApp": "Mobile App",
