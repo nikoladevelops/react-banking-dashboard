@@ -1,10 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+
+@font-face {
+    font-family: IBM_Plex_Serif;
+    src: url("../assets/fonts/IBM_Plex_Serif-Regular.ttf");
+}
+
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Optional custom styles below */
 body {
     margin: 0;
-    font-family: system-ui, sans-serif;
 }
 
 @utility hover-themed {
@@ -13,5 +19,15 @@ body {
     }
     .dark &:hover {
         color: #4ade80; /* text-green-400 */
+    }
+}
+
+@theme {
+    --font-noto-seriff: "Noto Serif", system-ui, sans-serif;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-noto-seriff);
     }
 }
