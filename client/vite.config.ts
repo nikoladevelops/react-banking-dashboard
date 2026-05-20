@@ -11,7 +11,16 @@ export default defineConfig({
     svgr({
       svgrOptions: {
         icon: true,
-        replaceAttrValues: { "#fff": "currentColor" },
+        replaceAttrValues: {
+          "#fff": "currentColor",
+          "#FFF": "currentColor",
+          white: "currentColor",
+          "#000": "currentColor",
+          "#000000": "currentColor",
+          black: "currentColor",
+          "rgb(0,0,0)": "currentColor",
+          "0,0,0": "currentColor",
+        },
       },
       include: "**/*.svg?react",
     }),
