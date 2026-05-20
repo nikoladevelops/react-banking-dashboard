@@ -9,7 +9,7 @@ const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="hover-themed transition-colors flex justify-center items-center">
       <button onClick={() => toggleLanguage()}>
         {i18n.language === "en" ? "Български" : "English"}
       </button>
