@@ -52,7 +52,7 @@ export default function Login({ setUser }) {
     <div className="flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 w-150 bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md"
+        className="flex flex-col gap-5 w-150 bg-white dark:bg-[#0c0e36] p-6 rounded-lg shadow-md"
       >
         <h3 className="text-xl font-bold text-center">
           {t("login-form.login")}
