@@ -14,20 +14,22 @@ export default function NavButton({
   to,
   SvgIcon,
   SvgIcon2,
-  iconWidth = 5,
-  iconHeight = 4,
+  iconWidth = 18,
+  iconHeight = 18,
   children,
 }: NavButtonProps) {
-  const iconClassName = `w-${iconWidth} h-${iconHeight}`;
-
   return (
     <Link
       to={to}
       className="flex justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors"
     >
       <div className="flex">
-        {SvgIcon && <SvgIcon className={iconClassName} />}
-        {SvgIcon2 && <SvgIcon2 className={iconClassName} />}
+        {SvgIcon && (
+          <SvgIcon width={`${iconWidth}px`} height={`${iconHeight}px`} />
+        )}
+        {SvgIcon2 && (
+          <SvgIcon2 width={`${iconWidth}px`} height={`${iconHeight}px`} />
+        )}
       </div>
       {children}
     </Link>
