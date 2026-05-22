@@ -21,9 +21,9 @@ export default function NavButton({
   return (
     <Link
       to={to}
-      className="flex justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors"
+      className="flex justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors text-center max-sm:flex-col"
     >
-      <div className="flex">
+      <div className="flex justify-center items-center text-center">
         {SvgIcon && (
           <SvgIcon width={`${iconWidth}px`} height={`${iconHeight}px`} />
         )}

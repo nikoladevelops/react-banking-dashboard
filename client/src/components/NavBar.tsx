@@ -8,50 +8,38 @@ import { useState } from "react";
 
 export default function NavBar({ user, setUser }) {
   const [isOpen, setIsOpen] = useState(false);
-
   function onToggleNav() {
     setIsOpen(!isOpen);
   }
 
   return (
     <>
-      {/* Desktop NavBar */}
-      <nav className="flex w-full p-10 gap-5 justify-between items-center bg-white dark:bg-[#0c0e36] border-b border-gray-200 dark:border-black max-xl:hidden">
-        <NavLogo className="flex items-center justify-center" />
-        <NavLinks className="flex gap-5 justify-center" />
-        <NavAuth user={user} setUser={setUser} className="flex gap-5" />
-      </nav>
-      {/* Tablet and Mobile NavBar */}
-      <nav className="flex flex-col p-10 gap-10 text-2xl content-center justify-between items-center bg-white dark:bg-[#0c0e36] border-b border-gray-200 dark:border-black xl:hidden">
-        <div className="flex w-full justify-between">
+      <nav className="flex max-xl:text-2xl max-xl:flex-col w-full p-10 gap-5 max-xl:gap-10 justify-between items-center bg-white dark:bg-[#0c0e36] border-b border-gray-200 dark:border-black">
+        {/* Logo And Toggle Button */}
+        <div className="flex max-xl:w-full justify-between items-center">
           <NavLogo logoWidth={200} />
-          {isOpen ? (
-            <Close
-              width="50"
-              height="50"
-              className="flex items-center justify-center hover-themed"
-              onClick={onToggleNav}
-            />
-          ) : (
-            <MenuBurger
-              width="45"
-              height="45"
-              className="flex items-center justify-center hover-themed"
-              onClick={onToggleNav}
-            />
-          )}
+          <Close
+            width="50"
+            height="50"
+            className={`flex ${isOpen ? "flex" : "hidden"} xl:hidden items-center justify-center hover-themed`}
+            onClick={onToggleNav}
+          />
+          <MenuBurger
+            width="45"
+            height="45"
+            className={`flex ${isOpen ? "hidden" : "flex"} xl:hidden items-center justify-center hover-themed`}
+            onClick={onToggleNav}
+          />
         </div>
-        {/* Actual NavBar Content */}
-        {isOpen && (
-          <>
-            <NavLinks className="flex flex-col gap-10 justify-center items-center" />
-            <NavAuth
-              user={user}
-              setUser={setUser}
-              className="flex flex-col gap-10 justify-center items-center"
-            />
-          </>
-        )}
+        {/* NavBar Content */}
+        <NavLinks
+          className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col gap-5 max-xl:gap-10 justify-center items-center text-center`}
+        />
+        <NavAuth
+          user={user}
+          setUser={setUser}
+          className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col justify-center items-center gap-5 max-xl:gap-10 text-center`}
+        />
       </nav>
     </>
   );
