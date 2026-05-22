@@ -8,6 +8,13 @@ body {
     margin: 0;
 }
 
+.nav-link.active {
+    color: #2563eb;
+}
+.dark .nav-link.active {
+    color: #4ade80;
+}
+
 @utility hover-themed {
     &:hover {
         color: #2563eb; /* text-blue-600 */

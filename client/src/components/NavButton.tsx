@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import { type ComponentType, type SVGProps } from "react";
 
 interface NavButtonProps {
@@ -19,9 +19,9 @@ export default function NavButton({
   children,
 }: NavButtonProps) {
   return (
-    <Link
+    <NavLink
       to={to}
-      className="flex justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors text-center max-sm:flex-col"
+      className="flex nav-link justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors text-center max-sm:flex-col"
     >
       <div className="flex justify-center items-center text-center">
         {SvgIcon && (
@@ -32,6 +32,6 @@ export default function NavButton({
         )}
       </div>
       {children}
-    </Link>
+    </NavLink>
   );
 }
