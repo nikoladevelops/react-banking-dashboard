@@ -20,7 +20,7 @@ export default function LogoutButton({ setUser }) {
   return (
     <button
       onClick={logOut}
-      className="flex items-center gap-2 hover-themed transition-colors"
+      className="flex items-center gap-2 hover-themed transition-colors text-center max-sm:flex-col"
     >
       <Logout className="w-5 h-4" />
       {t("nav.logout")}

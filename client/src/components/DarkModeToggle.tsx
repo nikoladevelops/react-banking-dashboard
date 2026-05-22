@@ -35,12 +35,20 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 hover-themed transition-colors"
+      className="hover-themed transition-colors"
       aria-label="Toggle dark mode"
     >
-      {darkMode
-        ? `🌞 ${t("generic.lightMode")}`
-        : `🌙 ${t("generic.darkMode")}`}
+      {darkMode ? (
+        <div className="flex text-center max-sm:flex-col gap-2">
+          <span>🌞</span>
+          <span>{t("generic.lightMode")}</span>
+        </div>
+      ) : (
+        <div className="flex text-center max-sm:flex-col gap-2">
+          <span>🌙</span>
+          <span>{t("generic.darkMode")}</span>
+        </div>
+      )}
     </button>
   );
 }
