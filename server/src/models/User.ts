@@ -1,10 +1,12 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUser extends Document {
   username: string;
   password: string;
   comparePassword(enteredPassword: string): Promise<boolean>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const userSchema = new Schema<IUser>(

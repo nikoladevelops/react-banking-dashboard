@@ -11,6 +11,8 @@ export const ErrorKeys = {
     userNotFound: "users.userNotFound",
     invalidUserId: "users.invalidUserId",
     usernameRequired: "users.usernameRequired",
+    passwordRequired: "users.passwordRequired",
+    updateFieldsRequired: "users.updateFieldsRequired",
   },
   validation: {
     //TODO

@@ -1,7 +1,10 @@
 import { type Request, type Response, type NextFunction } from "express";
+
 import { verifyToken } from "../utils/jwtHelper.js";
-import { errorResponse } from "../utils/response.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
+import { getUserById } from "../services/userService.js";
+import { UnauthorizedError } from "../utils/errors.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 export interface AuthRequest extends Request {
   user?: {
@@ -10,19 +13,31 @@ export interface AuthRequest extends Request {
   };
 }
 
-export const protect = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction,
-) => {
-  const token: string | undefined = req.cookies?.token;
+export const protect = asyncHandler(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const token = req.cookies?.token;
 
-  if (!token) {
-    return res.status(401).json(errorResponse(ErrorKeys.auth.tokenMissing));
-  }
+    if (!token) {
+      throw new UnauthorizedError(
+        "No token provided",
+        ErrorKeys.auth.tokenMissing,
+      );
+    }
 
-  try {
-    const decoded = verifyToken(token);
+    let decoded;
+    try {
+      decoded = verifyToken(token);
+    } catch (err) {
+      throw new UnauthorizedError("Invalid token", ErrorKeys.auth.tokenInvalid);
+    }
+
+    const user = await getUserById(decoded.id);
+    if (!user) {
+      throw new UnauthorizedError(
+        "User not found",
+        ErrorKeys.users.userNotFound,
+      );
+    }
 
     req.user = {
       id: decoded.id,
@@ -30,7 +45,5 @@ export const protect = async (
     };
 
     next();
-  } catch (error: any) {
-    return res.status(401).json(errorResponse(ErrorKeys.auth.tokenInvalid));
-  }
-};
+  },
+);

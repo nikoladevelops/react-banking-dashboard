@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/authRoutes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: `${process.env.FRONTEND_URL}`,
+    origin: `${process.env.FRONTEND_URL}`, // TODO check
     credentials: true,
   }),
 );
@@ -33,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.json({ message: "Hello from backend!" });
 });
+
+app.use(errorHandler);
 
 connectDB(MONGO_URI)
   .then(() => {
