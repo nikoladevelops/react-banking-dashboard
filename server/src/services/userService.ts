@@ -1,56 +1,80 @@
-import User, { type IUser } from "../models/User.js";
+import type CreateUserDTO from "../dtos/user/CreateUserDTO.js";
+import type UpdateUserDTO from "../dtos/user/UpdateUserDTO.js";
+import { type IUser } from "../models/User.js";
+import userRepository from "../repositories/userRepository.js";
+import { ConflictError, NotFoundError } from "../utils/errors.js";
+import { ErrorKeys } from "../constants/errorKeys.js";
 
-export const createUser = async (
-  username: string,
-  password: string,
-): Promise<IUser> => {
-  const user = new User({ username, password });
-  await user.save();
+export const createUser = async (dto: CreateUserDTO): Promise<IUser> => {
+  const userExists = await userRepository.findByUsername(dto.username);
+
+  if (userExists) {
+    throw new ConflictError(
+      "User already exists",
+      ErrorKeys.auth.usernameAlreadyTaken,
+    );
+  }
+
+  const user = await userRepository.createUser(dto);
   return user;
 };
 
 export const getAllUsers = async (): Promise<IUser[]> => {
-  const users = await User.find();
+  const users = await userRepository.getAllUsers();
 
   return users;
 };
 
 export const getUserById = async (id: string): Promise<IUser | null> => {
-  const user = await User.findById(id);
+  const user = await userRepository.findById(id);
+
   return user;
 };
 
 export const getUserByUsername = async (
   username: string,
 ): Promise<IUser | null> => {
-  const user = await User.findOne({ username });
+  const user = await userRepository.findByUsername(username);
+
   return user;
 };
 
 export const updateUser = async (
   id: string,
-  username?: string,
-  password?: string,
-): Promise<IUser | null> => {
-  const updateData: any = {};
+  dto: UpdateUserDTO,
+): Promise<IUser> => {
+  const currentUser = await userRepository.findById(id);
 
-  if (username !== undefined) {
-    updateData.username = username;
+  if (!currentUser) {
+    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }
 
-  if (password !== undefined) {
-    updateData.password = password;
+  if (dto.username && dto.username !== currentUser.username) {
+    const userExists = await userRepository.findByUsername(dto.username);
+
+    if (userExists) {
+      throw new ConflictError(
+        "Username already taken",
+        ErrorKeys.auth.usernameAlreadyTaken,
+      );
+    }
   }
 
-  const user = await User.findByIdAndUpdate(id, updateData, {
-    new: true,
-    runValidators: true,
-  });
+  const user = await userRepository.updateUser(id, dto);
+
+  if (!user) {
+    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
+  }
+
   return user;
 };
 
-export const deleteUser = async (id: string): Promise<boolean> => {
-  const result = await User.findByIdAndDelete(id);
-  const deleted = !!result;
-  return deleted;
+export const deleteUser = async (id: string): Promise<IUser> => {
+  const result = await userRepository.deleteUser(id);
+
+  if (!result) {
+    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
+  }
+
+  return result;
 };

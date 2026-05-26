@@ -39,7 +39,9 @@
     "users": {
       "userNotFound": "User not found",
       "invalidUserId": "Invalid user ID",
-      "usernameRequired": "Username is required"
+      "usernameRequired": "Username is required",
+      "passwordRequired": "Password is required",
+      "updateFieldsRequired": "The update fields are required"
     },
     "validation": {},
     "payment": {},

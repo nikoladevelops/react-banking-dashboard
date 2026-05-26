@@ -39,7 +39,9 @@
     "users": {
       "userNotFound": "Потребителят не е намерен",
       "invalidUserId": "Невалиден потребителски идентификатор",
-      "usernameRequired": "Потребителското име е задължително"
+      "usernameRequired": "Потребителското име е задължително",
+      "passwordRequired": "Паролата е задължителна",
+      "updateFieldsRequired": "Потребителските полета за обновяване са задължителни"
     },
     "validation": {},
     "payment": {},
