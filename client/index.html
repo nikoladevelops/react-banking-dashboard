@@ -5,8 +5,43 @@
         <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Fibank</title>
+        <script>
+            (function () {
+                const darkBg = "#0f1142"; // dark:bg-[#0f1142]
+                const lightBg = "#f3f4f6"; // bg-gray-100
+
+                function applyDarkMode(isDark) {
+                    const html = document.documentElement;
+                    if (isDark) {
+                        html.classList.add("dark");
+                        html.style.backgroundColor = darkBg;
+                    } else {
+                        html.classList.remove("dark");
+                        html.style.backgroundColor = lightBg;
+                    }
+                }
+
+                // Read saved preference or system preference
+                let isDark;
+                try {
+                    const saved = localStorage.getItem("darkMode");
+                    const prefersDark = window.matchMedia(
+                        "(prefers-color-scheme: dark)",
+                    ).matches;
+                    isDark =
+                        saved === "true" || (saved === null && prefersDark);
+                } catch (e) {
+                    isDark = false;
+                }
+
+                applyDarkMode(isDark);
+
+                // Expose the function globally for reuse
+                window.__applyDarkMode = applyDarkMode;
+            })();
+        </script>
     </head>
-    <body class="bg-gray-100 dark:bg-[#0f1142]">
+    <body>
         <div id="root"></div>
         <script type="module" src="/src/main.tsx"></script>
     </body>

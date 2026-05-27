@@ -1,35 +1,15 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { initDarkMode, setDarkModePreference } from "../utility/darkMode";
 
 export default function DarkModeToggle() {
   const { t } = useTranslation();
-
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("darkMode");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    const isDark = saved === "true" || (saved === null && prefersDark);
-
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    return isDark;
-  });
+  const [darkMode, setDarkMode] = useState(() => initDarkMode());
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
-    localStorage.setItem("darkMode", String(newMode));
-
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    setDarkModePreference(newMode);
   };
 
   return (
