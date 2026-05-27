@@ -6,8 +6,11 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { validateEnv } from "./utils/envValidator.js";
 
 dotenv.config();
+
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT;
