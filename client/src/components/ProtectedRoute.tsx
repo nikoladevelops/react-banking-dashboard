@@ -1,6 +1,7 @@
 import { Navigate } from "react-router";
 import { useUserStore } from "../userStore";
 import { type ReactNode } from "react";
+import Loading from "../pages/Loading";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ export default function ProtectedRoute({
 
   // When user is undefined, means it's still loading
   if (user === undefined) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   // User is null, means not logged in so redirect to login

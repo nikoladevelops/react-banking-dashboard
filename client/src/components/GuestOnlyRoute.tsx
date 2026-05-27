@@ -1,6 +1,7 @@
 import { Navigate } from "react-router";
 import { useUserStore } from "../userStore";
 import { type ReactNode } from "react";
+import Loading from "../pages/Loading";
 
 interface GuestOnlyRouteProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ export default function GuestOnlyRoute({
 
   // Still loading
   if (user === undefined) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   // If logged in, redirect away from guest-only page
