@@ -1,7 +1,6 @@
 import api from "../api/axiosInstance.js";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useUserStore } from "../userStore.js";
 
@@ -23,7 +22,6 @@ export default function Register() {
   } = useForm<RegisterForm>();
 
   const [errorCode, setErrorCode] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (prevLanguage.current !== i18n.language) {
@@ -41,7 +39,6 @@ export default function Register() {
     try {
       const res = await api.post("/auth/register", data);
       setUser(res.data.data);
-      navigate("/profile");
     } catch (err) {
       setErrorCode(
         err.response?.data?.errorCode || "server.internalServerError",

@@ -5,8 +5,9 @@ import Register from "./pages/Register";
 import { useEffect } from "react";
 import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
-import { Navigate } from "react-router";
 import { useUserStore } from "./userStore.js";
+import ProtectedRoute from "./components/ProtectedRoute.js";
+import GuestRoute from "./components/GuestOnlyRoute.js";
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -32,15 +33,27 @@ function App() {
           <Route path="/help" element={<div>Help Page</div>} />
           <Route
             path="/login"
-            element={user ? <Navigate to="/" replace /> : <Login />}
+            element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            }
           />
           <Route
             path="/register"
-            element={user ? <Navigate to="/" replace /> : <Register />}
+            element={
+              <GuestRoute>
+                <Register />
+              </GuestRoute>
+            }
           />
           <Route
             path="/profile"
-            element={user ? <Profile /> : <Navigate to="/login" replace />}
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </div>
