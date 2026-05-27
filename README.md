@@ -139,6 +139,3 @@ This project is for educational/demo purposes. No official license yet.
 ---
 
 _Last updated: May 2026 – still under active construction. Feature set, architecture, and security hardening ongoing._
-```
-
-Just copy everything above, save it as `README.md`, and place it in your project root. The formatting is correct and complete.
