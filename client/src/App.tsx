@@ -8,6 +8,8 @@ import NavBar from "./components/NavBar";
 import { useUserStore } from "./userStore.js";
 import ProtectedRoute from "./components/ProtectedRoute.js";
 import GuestOnlyRoute from "./components/GuestOnlyRoute.js";
+import NotFound from "./pages/NotFound.js";
+import Loading from "./pages/Loading.js";
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -18,7 +20,7 @@ function App() {
   }, [fetchUser]);
 
   if (user === undefined) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -55,6 +57,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>
