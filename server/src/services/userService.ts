@@ -1,56 +1,91 @@
+import mongoose from "mongoose";
 import type CreateUserDTO from "../dtos/user/CreateUserDTO.js";
 import type UpdateUserDTO from "../dtos/user/UpdateUserDTO.js";
 import { type IUser } from "../models/User.js";
 import userRepository from "../repositories/userRepository.js";
-import { ConflictError, NotFoundError } from "../utils/errors.js";
+import {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+} from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 
-export const createUser = async (dto: CreateUserDTO): Promise<IUser> => {
-  const userExists = await userRepository.findByUsername(dto.username);
-
-  if (userExists) {
-    throw new ConflictError(
-      "User already exists",
-      ErrorKeys.auth.usernameAlreadyTaken,
-    );
-  }
-
-  const user = await userRepository.createUser(dto);
-  return user;
-};
-
-export const getAllUsers = async (): Promise<IUser[]> => {
-  const users = await userRepository.getAllUsers();
-
-  return users;
-};
+function isValidObjectId(id: string): boolean {
+  return mongoose.Types.ObjectId.isValid(id);
+}
 
 export const getUserById = async (id: string): Promise<IUser | null> => {
-  const user = await userRepository.findById(id);
-
-  return user;
+  return await userRepository.findById(id);
 };
 
 export const getUserByUsername = async (
   username: string,
 ): Promise<IUser | null> => {
-  const user = await userRepository.findByUsername(username);
+  return await userRepository.findByUsername(username);
+};
+
+export const getUserByIdOrThrow = async (id: string): Promise<IUser> => {
+  const user = await getUserById(id);
+
+  if (!user) {
+    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
+  }
 
   return user;
+};
+
+export const createUser = async (dto: CreateUserDTO): Promise<IUser> => {
+  if (!dto.username) {
+    throw new BadRequestError(
+      "Username required",
+      ErrorKeys.users.usernameRequired,
+    );
+  }
+
+  if (!dto.password) {
+    throw new BadRequestError(
+      "Password required",
+      ErrorKeys.users.passwordRequired,
+    );
+  }
+
+  const existing = await getUserByUsername(dto.username);
+  if (existing) {
+    throw new ConflictError(
+      "Username already taken",
+      ErrorKeys.auth.usernameAlreadyTaken,
+    );
+  }
+
+  return await userRepository.createUser(dto);
+};
+
+export const getAllUsers = async (): Promise<IUser[]> => {
+  return await userRepository.getAllUsers();
 };
 
 export const updateUser = async (
   id: string,
   dto: UpdateUserDTO,
 ): Promise<IUser> => {
-  const currentUser = await userRepository.findById(id);
+  if (!isValidObjectId(id)) {
+    throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
+  }
 
+  if (dto.username === undefined && dto.password === undefined) {
+    throw new BadRequestError(
+      "At least one field required",
+      ErrorKeys.users.updateFieldsRequired,
+    );
+  }
+
+  const currentUser = await getUserById(id);
   if (!currentUser) {
     throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }
 
   if (dto.username && dto.username !== currentUser.username) {
-    const userExists = await userRepository.findByUsername(dto.username);
+    const userExists = await getUserByUsername(dto.username);
 
     if (userExists) {
       throw new ConflictError(
@@ -60,21 +95,24 @@ export const updateUser = async (
     }
   }
 
-  const user = await userRepository.updateUser(id, dto);
-
-  if (!user) {
+  const updated = await userRepository.updateUser(id, dto);
+  if (!updated) {
     throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }
 
-  return user;
+  return updated;
 };
 
 export const deleteUser = async (id: string): Promise<IUser> => {
-  const result = await userRepository.deleteUser(id);
+  if (!isValidObjectId(id)) {
+    throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
+  }
 
-  if (!result) {
+  const deleted = await userRepository.deleteUser(id);
+
+  if (!deleted) {
     throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }
 
-  return result;
+  return deleted;
 };

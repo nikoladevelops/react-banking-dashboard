@@ -5,7 +5,7 @@ export default function Loading() {
         <p className="text-2xl text-gray-600 dark:text-gray-400 mt-4">
           Loading...
         </p>
-        <p className="mt-6 inline-block px-6 py-3 dark:text-white text-gray-500 rounded-lg">
+        <p className="mt-6 inline-block px-6 py-3 text-gray-500 dark:text-white rounded-lg">
           Please wait while we load your content.
         </p>
       </div>

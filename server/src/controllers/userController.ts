@@ -1,11 +1,6 @@
 import { type Request, type Response } from "express";
-import mongoose from "mongoose";
 import * as userService from "../services/userService.js";
 import { successResponse } from "../utils/response.js";
-import { BadRequestError, NotFoundError } from "../utils/errors.js";
-import { ErrorKeys } from "../constants/errorKeys.js";
-import type CreateUserDTO from "../dtos/user/CreateUserDTO.js";
-import type UpdateUserDTO from "../dtos/user/UpdateUserDTO.js";
 import type { IUser } from "../models/User.js";
 import type UserResponseDTO from "../dtos/user/UserResponseDTO.js";
 
@@ -28,39 +23,13 @@ export const getUserById = async (
   req: Request<{ id: string }>,
   res: Response,
 ) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
-  }
-
-  const user = await userService.getUserById(id);
-  if (!user) {
-    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
-  }
-
+  const user = await userService.getUserByIdOrThrow(req.params.id);
   const response = toUserResponseDTO(user);
   res.status(200).json(successResponse(response));
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-
-  if (!username) {
-    throw new BadRequestError(
-      "Username required",
-      ErrorKeys.users.usernameRequired,
-    );
-  }
-  if (!password) {
-    throw new BadRequestError(
-      "Password required",
-      ErrorKeys.users.passwordRequired,
-    );
-  }
-
-  const createUserDto: CreateUserDTO = { username, password };
-  const user = await userService.createUser(createUserDto);
+  const user = await userService.createUser(req.body);
   const response = toUserResponseDTO(user);
   res.status(201).json(successResponse(response));
 };
@@ -69,21 +38,7 @@ export const updateUser = async (
   req: Request<{ id: string }>,
   res: Response,
 ) => {
-  const { id } = req.params;
-  const { username, password } = req.body;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
-  }
-  if (username === undefined && password === undefined) {
-    throw new BadRequestError(
-      "At least one field required",
-      ErrorKeys.users.updateFieldsRequired,
-    );
-  }
-
-  const updateUserDto: UpdateUserDTO = { username, password };
-  const user = await userService.updateUser(id, updateUserDto);
+  const user = await userService.updateUser(req.params.id, req.body);
   const response = toUserResponseDTO(user);
   res.status(200).json(successResponse(response));
 };
@@ -92,13 +47,7 @@ export const deleteUser = async (
   req: Request<{ id: string }>,
   res: Response,
 ) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
-  }
-
-  const user = await userService.deleteUser(id);
+  const user = await userService.deleteUser(req.params.id);
   const response = toUserResponseDTO(user);
   res.status(200).json(successResponse(response));
 };
