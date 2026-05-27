@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import LogoutButton from "./LogoutButton";
 import { useTranslation } from "react-i18next";
 import { useUserStore } from "../userStore";
@@ -14,30 +14,30 @@ export default function NavAuth({ className }) {
     <div className={className}>
       {!user ? (
         <>
-          <Link
+          <NavLink
             to="/register"
-            className="hover-themed transition-colors"
+            className="nav-link hover-themed transition-colors"
             onClick={closeMainNav}
           >
             {t("nav.register")}
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/login"
-            className="hover-themed transition-colors"
+            className="nav-link hover-themed transition-colors"
             onClick={closeMainNav}
           >
             {t("nav.login")}
-          </Link>
+          </NavLink>
         </>
       ) : (
         <>
-          <Link
+          <NavLink
             to="/profile"
-            className="flex items-center hover-themed transition-colors"
+            className="nav-link flex items-center hover-themed transition-colors"
             onClick={closeMainNav}
           >
             {t("nav.profile")}
-          </Link>
+          </NavLink>
           <LogoutButton />
         </>
       )}
