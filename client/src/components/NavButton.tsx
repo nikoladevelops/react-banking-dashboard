@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { type ComponentType, type SVGProps } from "react";
+import { useUIStore } from "../uiStore";
 
 interface NavButtonProps {
   to: string;
@@ -18,10 +19,13 @@ export default function NavButton({
   iconHeight = 18,
   children,
 }: NavButtonProps) {
+  const closeMainNav = useUIStore((state) => state.closeMainNav);
+
   return (
     <NavLink
       to={to}
       className="flex nav-link justify-center items-center gap-2 text-black dark:text-white hover-themed transition-colors text-center max-sm:flex-col"
+      onClick={closeMainNav}
     >
       <div className="flex justify-center items-center text-center">
         {SvgIcon && (

@@ -2,15 +2,21 @@ import Logout from "../assets/navbar/shutdown.svg?react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import api from "../api/axiosInstance.js";
+import { useUserStore } from "../userStore.js";
+import { useUIStore } from "../uiStore.js";
 
-export default function LogoutButton({ setUser }) {
+export default function LogoutButton() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+
+  const closeMainNav = useUIStore((state) => state.closeMainNav);
 
   const logOut = async () => {
     try {
       await api.post("/auth/logout");
       setUser(null);
+      closeMainNav();
       navigate("/");
     } catch (err) {
       console.error("Failed to log out. " + err.message);
