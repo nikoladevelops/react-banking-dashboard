@@ -4,14 +4,11 @@ import NavAuth from "./NavAuth.js";
 import MenuBurger from "../assets/navbar/menu-burger.svg?react";
 import Close from "../assets/navbar/close.svg?react";
 
-import { useState } from "react";
+import { useUIStore } from "../uiStore.js";
 
 export default function NavBar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  function onToggleNav() {
-    setIsOpen(!isOpen);
-  }
+  const isMainNavOpen = useUIStore((state) => state.isMainNavOpen);
+  const toggleMainNav = useUIStore((state) => state.toggleMainNav);
 
   return (
     <>
@@ -22,22 +19,22 @@ export default function NavBar() {
           <Close
             width="50"
             height="50"
-            className={`flex ${isOpen ? "flex" : "hidden"} xl:hidden items-center justify-center hover-themed`}
-            onClick={onToggleNav}
+            className={`flex ${isMainNavOpen ? "flex" : "hidden"} xl:hidden items-center justify-center hover-themed`}
+            onClick={toggleMainNav}
           />
           <MenuBurger
             width="45"
             height="45"
-            className={`flex ${isOpen ? "hidden" : "flex"} xl:hidden items-center justify-center hover-themed`}
-            onClick={onToggleNav}
+            className={`flex ${isMainNavOpen ? "hidden" : "flex"} xl:hidden items-center justify-center hover-themed`}
+            onClick={toggleMainNav}
           />
         </div>
         {/* NavBar Content */}
         <NavLinks
-          className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col gap-5 max-xl:gap-10 justify-center items-center text-center`}
+          className={`${isMainNavOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col gap-5 max-xl:gap-10 justify-center items-center text-center`}
         />
         <NavAuth
-          className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col justify-center items-center gap-5 max-xl:gap-10 text-center`}
+          className={`${isMainNavOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col justify-center items-center gap-5 max-xl:gap-10 text-center`}
         />
       </nav>
     </>

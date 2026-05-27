@@ -8,7 +8,11 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
 import DarkModeToggle from "./DarkModeToggle";
 
-export default function NavLinks({ className }) {
+interface NavLinksProps {
+  className?: string;
+}
+
+export default function NavLinks({ className }: NavLinksProps) {
   const { t } = useTranslation();
   return (
     <div className={className}>
