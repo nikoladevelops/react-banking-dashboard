@@ -6,8 +6,9 @@ import Close from "../assets/navbar/close.svg?react";
 
 import { useState } from "react";
 
-export default function NavBar({ user, setUser }) {
+export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+
   function onToggleNav() {
     setIsOpen(!isOpen);
   }
@@ -36,8 +37,6 @@ export default function NavBar({ user, setUser }) {
           className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col gap-5 max-xl:gap-10 justify-center items-center text-center`}
         />
         <NavAuth
-          user={user}
-          setUser={setUser}
           className={`${isOpen ? "flex" : "hidden"} xl:flex max-xl:flex-col justify-center items-center gap-5 max-xl:gap-10 text-center`}
         />
       </nav>

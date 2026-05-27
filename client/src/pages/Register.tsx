@@ -3,15 +3,17 @@ import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useUserStore } from "../userStore.js";
 
 interface RegisterForm {
   username: string;
   password: string;
 }
 
-export default function Register({ setUser }) {
+export default function Register() {
   const { t, i18n } = useTranslation();
   const prevLanguage = useRef(i18n.language);
+  const setUser = useUserStore((state) => state.setUser);
 
   const {
     register,

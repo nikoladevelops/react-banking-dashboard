@@ -1,9 +1,13 @@
 import { Link } from "react-router";
 import LogoutButton from "./LogoutButton";
 import { useTranslation } from "react-i18next";
+import { useUserStore } from "../userStore";
 
-export default function NavAuth({ user, setUser, className }) {
+export default function NavAuth({ className }) {
   const { t } = useTranslation();
+
+  const user = useUserStore((state) => state.user);
+
   return (
     <div className={className}>
       {!user ? (
@@ -23,7 +27,7 @@ export default function NavAuth({ user, setUser, className }) {
           >
             {t("nav.profile")}
           </Link>
-          <LogoutButton setUser={setUser} />
+          <LogoutButton />
         </>
       )}
     </div>
