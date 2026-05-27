@@ -7,7 +7,7 @@ import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
 import { useUserStore } from "./userStore.js";
 import ProtectedRoute from "./components/ProtectedRoute.js";
-import GuestRoute from "./components/GuestOnlyRoute.js";
+import GuestOnlyRoute from "./components/GuestOnlyRoute.js";
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -34,17 +34,17 @@ function App() {
           <Route
             path="/login"
             element={
-              <GuestRoute>
+              <GuestOnlyRoute>
                 <Login />
-              </GuestRoute>
+              </GuestOnlyRoute>
             }
           />
           <Route
             path="/register"
             element={
-              <GuestRoute>
+              <GuestOnlyRoute>
                 <Register />
-              </GuestRoute>
+              </GuestOnlyRoute>
             }
           />
           <Route

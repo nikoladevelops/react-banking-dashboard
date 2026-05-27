@@ -2,15 +2,15 @@ import { Navigate } from "react-router";
 import { useUserStore } from "../userStore";
 import { type ReactNode } from "react";
 
-interface GuestRouteProps {
+interface GuestOnlyRouteProps {
   children: ReactNode;
   redirectTo?: string;
 }
 
-export default function GuestRoute({
+export default function GuestOnlyRoute({
   children,
   redirectTo = "/profile",
-}: GuestRouteProps) {
+}: GuestOnlyRouteProps) {
   const user = useUserStore((state) => state.user);
 
   // Still loading
