@@ -1,0 +1,27 @@
+info:
+  name: Update Account
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{baseURL}}/api/accounts/{{accountId}}"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Emergency Fund",
+        "status": "closed"
+      }
+  auth: inherit
+
+runtime:
+  variables:
+    - name: accountId
+      value: 6a182e28e2a46647a694716f
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

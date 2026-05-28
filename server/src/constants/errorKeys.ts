@@ -14,8 +14,21 @@ export const ErrorKeys = {
     passwordRequired: "users.passwordRequired",
     updateFieldsRequired: "users.updateFieldsRequired",
   },
+  accounts: {
+    notFound: "accounts.notFound",
+    invalidId: "accounts.invalidId",
+    nameRequired: "accounts.nameRequired",
+    typeRequired: "accounts.typeRequired",
+    typeInvalid: "accounts.typeInvalid",
+    currencyRequired: "accounts.currencyRequired",
+    currencyInvalid: "accounts.currencyInvalid",
+    initialDepositInvalid: "accounts.initialDepositInvalid",
+    cannotDeleteNonZero: "accounts.cannotDeleteNonZero",
+    forbidden: "accounts.forbidden",
+    invalidOwnerId: "accounts.invalidOwnerId",
+  },
   validation: {
-    //TODO
+    invalidData: "validation.invalidData",
   },
   payment: {
     //TODO

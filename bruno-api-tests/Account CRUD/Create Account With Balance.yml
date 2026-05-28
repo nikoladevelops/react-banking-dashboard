@@ -1,0 +1,24 @@
+info:
+  name: Create Account With Balance
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/accounts"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Business Account",
+        "type": "business",
+        "currency": "USD",
+        "initialDeposit": 5000.75
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
