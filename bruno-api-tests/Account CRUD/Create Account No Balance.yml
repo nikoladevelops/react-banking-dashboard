@@ -1,0 +1,23 @@
+info:
+  name: Create Account No Balance
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/accounts"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Business Account",
+        "type": "business",
+        "currency": "USD"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

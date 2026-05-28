@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { validateEnv } from "./utils/envValidator.js";
+import accountRoutes from "./routes/accountRoutes.js";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use(express.json());
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/accounts", accountRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from backend!" });
