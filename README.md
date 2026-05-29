@@ -1,39 +1,28 @@
-
 # Banking Dashboard – Full Stack Application
 
-> **Status: 🚧 Under active development** – not yet ready for production use.
+> **Status: 🚧 Under active development**
 
-A modern banking dashboard frontend (React + Tailwind + Vite) and a secure backend API (Node.js + Express + MongoDB + Mongoose).  
+A modern banking dashboard with a secure backend API (Node.js + Express + MongoDB + Mongoose) and a responsive frontend (React + Tailwind + Vite).  
 The application includes user authentication (JWT, httpOnly cookies), role management, and a clean layered architecture (repository → service → controller → route).
-
-## 📋 Table of Contents
-
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Project Structure](#project-structure)
-- [Environment Variables](#environment-variables)
-- [Installation & Setup](#installation--setup)
-- [Running the Application](#running-the-application)
-- [Development Notes](#development-notes)
-- [License](#license)
 
 ## 🧰 Tech Stack
 
 ### Backend
 - **Runtime**: Node.js (v18+)
 - **Framework**: Express 5
-- **Database**: MongoDB (with Mongoose ODM)
+- **Database**: MongoDB with Mongoose ODM
 - **Authentication**: JWT (httpOnly cookies)
-- **Password hashing**: bcrypt (C++ bindings)
+- **Password hashing**: bcrypt
 - **Language**: TypeScript
 - **Architecture**: Repository → Service → Controller → Route
 
 ### Frontend
 - **Build tool**: Vite
-- **UI library**: React 18
+- **UI library**: React 19
 - **Styling**: Tailwind CSS (dark mode ready)
 - **State management**: Zustand
-- **Routing**: React Router v6
+- **Routing**: React Router 7
+- **Form handling**: React Hook Form
 - **HTTP client**: Axios
 - **Internationalisation**: i18next
 
@@ -46,9 +35,9 @@ The application includes user authentication (JWT, httpOnly cookies), role manag
 
 ## 🔐 Environment Variables
 
-### Backend (`.env` in `backend/` folder)
+### Backend (`.env` in `server/` folder)
 
-Create a `.env` file in the `backend/` folder with the following variables (see `.env.example`):
+Create a `.env` file in the `server/` folder with the following variables (see `.env.example`):
 
 ```env
 PORT=5000
@@ -90,26 +79,24 @@ VITE_API_BASE_URL=http://localhost:5000
 
 ## ▶️ Running the Application
 
-### Development mode (both servers concurrently)
-
-From the **project root**, use two terminal windows:
+### Development mode (two terminals)
 
 **Terminal 1 – Backend**
 ```bash
 cd server
-npm run dev       # starts with ts-node, watches for changes
+npm run dev       # starts with tsx --watch, auto‑restarts on changes
 ```
 
 **Terminal 2 – Frontend**
 ```bash
-cd client
+cd frontend
 npm run dev       # starts Vite dev server
 ```
 
 - Backend runs on `http://localhost:5000`
 - Frontend runs on `http://localhost:5173`
 
-### Production build (optional)
+### Production build
 
 **Backend**
 ```bash
@@ -120,7 +107,7 @@ npm start         # runs compiled code
 
 **Frontend**
 ```bash
-cd client
+cd frontend
 npm run build     # creates production bundle in dist/
 npm run preview   # preview production build locally
 ```
@@ -129,13 +116,11 @@ npm run preview   # preview production build locally
 
 - The backend uses **Express 5**, which automatically catches errors from async route handlers – no manual `try/catch` wrappers needed.
 - Error responses contain a client‑friendly `errorKey` (e.g., `"users.userNotFound"`) for easy internationalisation.
+- Monetary values are stored as **integer cents** (e.g., `15075` = 150.75 BGN). The client sends major units, the service converts.
+- **MongoDB transactions** are used for transfers – atomic updates with rollback on failure.
 - Dark mode is fully supported and persists via `localStorage`. The `<html>` background is set inline to prevent white flashes on refresh.
 - All required environment variables are validated at startup – the app will exit with a descriptive message if any are missing.
 
 ## 📄 License
 
 This project is for educational/demo purposes. No official license yet.
-
----
-
-_Last updated: May 2026 – still under active construction. Feature set, architecture, and security hardening ongoing._

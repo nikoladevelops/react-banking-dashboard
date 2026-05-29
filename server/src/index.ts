@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { validateEnv } from "./utils/envValidator.js";
 import accountRoutes from "./routes/accountRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: `${process.env.FRONTEND_URL}`, // TODO check
+    origin: `${process.env.FRONTEND_URL}`,
     credentials: true,
   }),
 );
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/accounts", accountRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from backend!" });

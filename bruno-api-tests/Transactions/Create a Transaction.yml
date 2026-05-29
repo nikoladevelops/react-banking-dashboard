@@ -1,0 +1,31 @@
+info:
+  name: Create a Transaction
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/transactions"
+  body:
+    type: json
+    data: |-
+      {
+        "fromAccountId": "{{fromAccountId}}",
+        "toAccountId": "{{toAccountId}}",
+        "amount": 150.75,
+        "reference": "Monthly savings"
+      }
+  auth: inherit
+
+runtime:
+  variables:
+    - name: fromAccountId
+      value: 6a184c2de133f0d9d0fa4040
+    - name: toAccountId
+      value: 6a184c75e133f0d9d0fa4042
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

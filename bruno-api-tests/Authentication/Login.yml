@@ -10,10 +10,17 @@ http:
     type: json
     data: |-
       {
-        "username": "newAccount",
-        "password":"newAccount"
+        "username": "{{username}}",
+        "password": "{{password}}"
       }
   auth: inherit
+
+runtime:
+  variables:
+    - name: username
+      value: testing1
+    - name: password
+      value: testing1
 
 settings:
   encodeUrl: true
