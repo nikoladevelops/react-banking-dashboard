@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { verifyToken } from "../utils/jwtHelper.js";
+import { verifyToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
 import { UnauthorizedError } from "../utils/errors.js";
@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
   user?: {
     id: string;
     username: string;
+    role: string;
   };
 }
 
@@ -25,21 +26,22 @@ export const protect = async (
     );
   }
 
-  let decoded;
+  let tokenPayload: AuthTokenPayload;
   try {
-    decoded = verifyToken(token);
+    tokenPayload = verifyToken(token);
   } catch (err) {
     throw new UnauthorizedError("Invalid token", ErrorKeys.auth.tokenInvalid);
   }
 
-  const user = await getUserById(decoded.id);
+  const user = await getUserById(tokenPayload.id);
   if (!user) {
     throw new UnauthorizedError("User not found", ErrorKeys.users.userNotFound);
   }
 
   req.user = {
-    id: decoded.id,
-    username: decoded.username,
+    id: user._id.toString(),
+    username: user.username,
+    role: user.role,
   };
 
   next();

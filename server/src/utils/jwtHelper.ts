@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import { type CookieOptions } from "express";
 
-interface DecodedToken {
+export interface AuthTokenPayload {
   id: string;
   username: string;
+  role: string;
 }
 
 export const getJwtCookieOptions = (): CookieOptions => {
@@ -15,12 +16,9 @@ export const getJwtCookieOptions = (): CookieOptions => {
   };
 };
 
-export const generateToken = (token: DecodedToken) => {
+export const generateToken = (payload: AuthTokenPayload) => {
   const secret = getJwtSecret();
-
-  return jwt.sign(token, secret, {
-    expiresIn: "1h",
-  });
+  return jwt.sign(payload, secret, { expiresIn: "1h" });
 };
 
 export const getJwtSecret = (): string => {
@@ -31,7 +29,7 @@ export const getJwtSecret = (): string => {
   return secret;
 };
 
-export const verifyToken = (token: string): DecodedToken => {
-  const decoded = jwt.verify(token, getJwtSecret()) as DecodedToken;
+export const verifyToken = (token: string): AuthTokenPayload => {
+  const decoded = jwt.verify(token, getJwtSecret()) as AuthTokenPayload;
   return decoded;
 };

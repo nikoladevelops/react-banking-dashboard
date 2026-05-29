@@ -7,12 +7,13 @@ import {
 } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import type CreateUserDTO from "../dtos/user/CreateUserDTO.js";
-import { generateToken } from "../utils/jwtHelper.js";
+import { generateToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
 import type LoginUserDTO from "../dtos/auth/LoginUserDTO.js";
+import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
 
 export const register = async (
   dto: RegisterUserDTO,
-): Promise<{ id: string; username: string; token: string }> => {
+): Promise<AuthResponseDTO> => {
   const { username: inputUsername, password } = dto;
 
   if (!inputUsername) {
@@ -41,15 +42,18 @@ export const register = async (
   const createUserDto: CreateUserDTO = { username: inputUsername, password };
   const newUser = await userService.createUser(createUserDto);
 
-  const token = generateToken({
+  const payload: AuthTokenPayload = {
     id: newUser._id.toString(),
     username: newUser.username,
-  });
+    role: newUser.role,
+  };
 
-  return { id: newUser._id.toString(), username: newUser.username, token };
+  const token = generateToken(payload);
+
+  return { tokenPayload: payload, token };
 };
 
-export const login = async (dto: LoginUserDTO) => {
+export const login = async (dto: LoginUserDTO): Promise<AuthResponseDTO> => {
   const { username: inputUsername, password } = dto;
 
   if (!inputUsername) {
@@ -82,10 +86,13 @@ export const login = async (dto: LoginUserDTO) => {
     );
   }
 
-  const token = generateToken({
+  const payload: AuthTokenPayload = {
     id: user._id.toString(),
     username: user.username,
-  });
+    role: user.role,
+  };
 
-  return { id: user._id.toString(), username: user.username, token };
+  const token = generateToken(payload);
+
+  return { tokenPayload: payload, token };
 };

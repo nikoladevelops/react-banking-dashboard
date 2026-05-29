@@ -1,36 +1,34 @@
 import { type Request, type Response } from "express";
 import * as authService from "../services/authService.js";
 import { getJwtCookieOptions } from "../utils/jwtHelper.js";
-import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
 import { successResponse } from "../utils/response.js";
 import type { AuthRequest } from "../middleware/auth.js";
+import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
 
 export const register = async (req: Request, res: Response) => {
   const { username: inputUsername, password } = req.body;
 
-  const { id, username, token } = await authService.register({
+  const authResponse: AuthResponseDTO = await authService.register({
     username: inputUsername,
     password,
   });
 
-  res.cookie("token", token, getJwtCookieOptions());
+  res.cookie("token", authResponse.token, getJwtCookieOptions());
 
-  const response: AuthResponseDTO = { id, username };
-  res.status(201).json(successResponse(response));
+  res.status(201).json(successResponse(authResponse.tokenPayload));
 };
 
 export const login = async (req: Request, res: Response) => {
   const { username: inputUsername, password } = req.body;
 
-  const { id, username, token } = await authService.login({
+  const authResponse: AuthResponseDTO = await authService.login({
     username: inputUsername,
     password,
   });
 
-  res.cookie("token", token, getJwtCookieOptions());
+  res.cookie("token", authResponse.token, getJwtCookieOptions());
 
-  const response: AuthResponseDTO = { id, username };
-  res.status(200).json(successResponse(response));
+  res.status(200).json(successResponse(authResponse.tokenPayload));
 };
 
 export const logout = async (req: Request, res: Response) => {
