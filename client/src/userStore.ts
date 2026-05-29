@@ -4,6 +4,7 @@ import api from "./api/axiosInstance";
 interface User {
   id: string;
   username: string;
+  role: string;
 }
 
 interface UserStore {
