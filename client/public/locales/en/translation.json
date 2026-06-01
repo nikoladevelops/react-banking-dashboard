@@ -1,8 +1,5 @@
 {
-  "generic": {
-    "lightMode": "Light Theme",
-    "darkMode": "Dark Theme"
-  },
+  "generic": { "lightMode": "Light Theme", "darkMode": "Dark Theme" },
   "nav": {
     "home": "Home",
     "mobileApp": "Mobile App",
@@ -24,10 +21,51 @@
     "username": "Username",
     "password": "Password"
   },
-  "errors": {
-    "generic": {
-      "minLength": "Minimum length is {{count}}"
+  "common": {
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "processing": "Processing...",
+    "creating": "Creating...",
+    "saving": "Saving..."
+  },
+  "dashboard": {
+    "accounts": {
+      "title": "Accounts",
+      "newAccount": "New Account",
+      "accountNumber": "Account:",
+      "type": "Type:",
+      "status": "Status:",
+      "edit": "Edit",
+      "delete": "Delete",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page"
+    }
+  },
+  "modals": {
+    "createAccount": {
+      "title": "Create New Account",
+      "name": "Account Name",
+      "type": "Type",
+      "currency": "Currency",
+      "deposit": "Initial Deposit",
+      "submit": "Create Account"
     },
+    "editAccount": {
+      "title": "Edit Account",
+      "name": "Account Name",
+      "type": "Type",
+      "currency": "Currency",
+      "submit": "Save Changes"
+    },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "message": "Are you sure you want to delete this account? This action cannot be undone.",
+      "confirm": "Delete"
+    },
+    "confirmation": { "confirm": "Yes" }
+  },
+  "errors": {
     "auth": {
       "usernameRequired": "Username is required",
       "passwordRequired": "Password is required",
@@ -43,10 +81,35 @@
       "passwordRequired": "Password is required",
       "updateFieldsRequired": "The update fields are required"
     },
-    "validation": {},
-    "payment": {},
-    "server": {
-      "internalServerError": "Internal server error"
-    }
+    "accounts": {
+      "notFound": "Account not found",
+      "invalidId": "Invalid account ID",
+      "nameRequired": "Account name is required",
+      "typeRequired": "Account type is required",
+      "typeInvalid": "Invalid account type",
+      "currencyRequired": "Currency is required",
+      "currencyInvalid": "Invalid currency",
+      "initialDepositInvalid": "Invalid initial deposit",
+      "cannotDeleteNonZero": "Cannot delete account with non-zero balance",
+      "forbidden": "Access forbidden",
+      "invalidOwnerId": "Invalid owner ID"
+    },
+    "transactions": {
+      "notFound": "Transaction not found",
+      "invalidId": "Invalid transaction ID",
+      "fromAccountRequired": "Source account is required",
+      "toAccountRequired": "Destination account is required",
+      "amountRequired": "Amount is required",
+      "amountHasToBePositive": "Amount must be positive",
+      "insufficientBalance": "Insufficient balance",
+      "transferToSameAccountImpossible": "Cannot transfer to the same account",
+      "currencyConversionImpossible": "Currency conversion not supported",
+      "accountNotFound": "Account not found",
+      "accountNotActive": "Account is not active",
+      "forbidden": "Access forbidden",
+      "transferFailed": "Transfer failed"
+    },
+    "validation": { "invalidData": "Invalid data provided" },
+    "server": { "internalServerError": "Internal server error" }
   }
 }

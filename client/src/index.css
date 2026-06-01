@@ -26,6 +26,7 @@ body {
 
 @theme {
     --font-noto-seriff: "Noto Serif", system-ui, sans-serif;
+    --color-custom-dark: #0c0e36;
 }
 
 @layer base {
