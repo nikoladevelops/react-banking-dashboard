@@ -34,7 +34,14 @@ function getCurrentUserId(req: Request): string {
 
 export const getMyAccounts = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-  const accounts = await accountService.getUserAccounts(currentUserId);
+  const limit = parseInt(req.query.limit as string) || 50;
+  const skip = parseInt(req.query.offset as string) || 0;
+
+  const accounts = await accountService.getUserAccounts(
+    currentUserId,
+    skip,
+    limit,
+  );
   const response = accounts.map(toAccountResponseDTO);
   res.status(200).json(successResponse(response));
 };

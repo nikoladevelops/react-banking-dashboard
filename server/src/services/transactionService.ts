@@ -90,7 +90,7 @@ export const transferMoney = async (
   if (dto.fromAccountId === dto.toAccountId) {
     throw new BadRequestError(
       "Cannot transfer to same account",
-      ErrorKeys.transactions.sameAccount,
+      ErrorKeys.transactions.transferToSameAccountImpossible,
     );
   }
 
@@ -104,7 +104,7 @@ export const transferMoney = async (
   if (typeof dto.amount !== "number" || dto.amount <= 0) {
     throw new BadRequestError(
       "Amount must be a positive number",
-      ErrorKeys.transactions.amountPositive,
+      ErrorKeys.transactions.amountHasToBePositive,
     );
   }
 
@@ -146,7 +146,7 @@ export const transferMoney = async (
   if (fromAccount.currency !== toAccount.currency) {
     throw new BadRequestError(
       "Currency mismatch – conversion not supported",
-      ErrorKeys.transactions.currencyMismatch,
+      ErrorKeys.transactions.currencyConversionImpossible,
     );
   }
 
