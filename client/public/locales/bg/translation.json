@@ -1,8 +1,5 @@
 {
-  "generic": {
-    "lightMode": "Светла Тема",
-    "darkMode": "Тъмна Тема"
-  },
+  "generic": { "lightMode": "Светла Тема", "darkMode": "Тъмна Тема" },
   "nav": {
     "home": "Начало",
     "mobileApp": "Мобилно приложение",
@@ -24,10 +21,51 @@
     "username": "Потребителско име",
     "password": "Парола"
   },
-  "errors": {
-    "generic": {
-      "minLength": "Минималната дължина е {{count}}"
+  "common": {
+    "cancel": "Отказ",
+    "yes": "Да",
+    "processing": "Обработка...",
+    "creating": "Създаване...",
+    "saving": "Запазване..."
+  },
+  "dashboard": {
+    "accounts": {
+      "title": "Сметки",
+      "newAccount": "Нова сметка",
+      "accountNumber": "Сметка:",
+      "type": "Тип:",
+      "status": "Статус:",
+      "edit": "Редактирай",
+      "delete": "Изтрий",
+      "previous": "Предишна",
+      "next": "Следваща",
+      "page": "Страница"
+    }
+  },
+  "modals": {
+    "createAccount": {
+      "title": "Създай нова сметка",
+      "name": "Име на сметката",
+      "type": "Тип",
+      "currency": "Валута",
+      "deposit": "Първоначален депозит",
+      "submit": "Създай сметка"
     },
+    "editAccount": {
+      "title": "Редактирай сметка",
+      "name": "Име на сметката",
+      "type": "Тип",
+      "currency": "Валута",
+      "submit": "Запази промените"
+    },
+    "deleteAccount": {
+      "title": "Изтрий сметка",
+      "message": "Сигурни ли сте, че искате да изтриете тази сметка? Това действие е необратимо.",
+      "confirm": "Изтрий"
+    },
+    "confirmation": { "confirm": "Да" }
+  },
+  "errors": {
     "auth": {
       "usernameRequired": "Потребителското име е задължително",
       "passwordRequired": "Паролата е задължителна",
@@ -41,12 +79,37 @@
       "invalidUserId": "Невалиден потребителски идентификатор",
       "usernameRequired": "Потребителското име е задължително",
       "passwordRequired": "Паролата е задължителна",
-      "updateFieldsRequired": "Потребителските полета за обновяване са задължителни"
+      "updateFieldsRequired": "Полетата за обновяване са задължителни"
     },
-    "validation": {},
-    "payment": {},
-    "server": {
-      "internalServerError": "Вътрешна грешка в сървъра"
-    }
+    "accounts": {
+      "notFound": "Сметката не е намерена",
+      "invalidId": "Невалиден идентификатор на сметка",
+      "nameRequired": "Името на сметката е задължително",
+      "typeRequired": "Типът на сметката е задължителен",
+      "typeInvalid": "Невалиден тип сметка",
+      "currencyRequired": "Валутата е задължителна",
+      "currencyInvalid": "Невалидна валута",
+      "initialDepositInvalid": "Невалиден начален депозит",
+      "cannotDeleteNonZero": "Не може да се изтрие сметка с наличен баланс",
+      "forbidden": "Достъпът е забранен",
+      "invalidOwnerId": "Невалиден идентификатор на собственик"
+    },
+    "transactions": {
+      "notFound": "Транзакцията не е намерена",
+      "invalidId": "Невалиден идентификатор на транзакция",
+      "fromAccountRequired": "Изходящата сметка е задължителна",
+      "toAccountRequired": "Целевата сметка е задължителна",
+      "amountRequired": "Сумата е задължителна",
+      "amountHasToBePositive": "Сумата трябва да бъде положителна",
+      "insufficientBalance": "Недостатъчен баланс",
+      "transferToSameAccountImpossible": "Не може да се превежда към същата сметка",
+      "currencyConversionImpossible": "Валутната конверсия не се поддържа",
+      "accountNotFound": "Сметката не е намерена",
+      "accountNotActive": "Сметката не е активна",
+      "forbidden": "Достъпът е забранен",
+      "transferFailed": "Преводът е неуспешен"
+    },
+    "validation": { "invalidData": "Предоставени са невалидни данни" },
+    "server": { "internalServerError": "Вътрешна грешка в сървъра" }
   }
 }

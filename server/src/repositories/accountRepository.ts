@@ -10,8 +10,22 @@ class AccountRepository {
     return await Account.findById(id);
   }
 
-  async findAllByOwner(ownerId: string): Promise<IAccount[]> {
-    return await Account.find({ owner: ownerId });
+  async findAllByOwner(
+    ownerId: string,
+    skip?: number,
+    limit?: number,
+  ): Promise<IAccount[]> {
+    let query = Account.find({ owner: ownerId });
+
+    if (skip !== undefined) {
+      query = query.skip(skip);
+    }
+
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
+
+    return await query.exec();
   }
 
   async createAccount(
@@ -26,7 +40,6 @@ class AccountRepository {
     });
 
     await account.save();
-
     return account;
   }
 
@@ -34,7 +47,9 @@ class AccountRepository {
     id: string,
     updateData: UpdateAccountDTO,
   ): Promise<IAccount | null> {
-    return await Account.findByIdAndUpdate(id, updateData, { new: true });
+    return await Account.findByIdAndUpdate(id, updateData, {
+      returnDocument: "after",
+    });
   }
 
   async deleteAccount(id: string): Promise<IAccount | null> {

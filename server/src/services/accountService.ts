@@ -48,6 +48,8 @@ export const getAccountByIdOrThrow = async (
 
 export const getUserAccounts = async (
   currentUserId: string,
+  skip: number,
+  limit: number,
 ): Promise<IAccount[]> => {
   if (!isValidObjectId(currentUserId)) {
     throw new BadRequestError(
@@ -55,7 +57,8 @@ export const getUserAccounts = async (
       ErrorKeys.accounts.invalidOwnerId,
     );
   }
-  return await accountRepository.findAllByOwner(currentUserId);
+
+  return await accountRepository.findAllByOwner(currentUserId, skip, limit);
 };
 
 export const createAccount = async (
