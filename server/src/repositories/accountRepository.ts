@@ -10,6 +10,10 @@ class AccountRepository {
     return await Account.findById(id);
   }
 
+  async findByAccountNumber(accountNumber: string): Promise<IAccount | null> {
+    return await Account.findOne({ accountNumber });
+  }
+
   async findAllByOwner(
     ownerId: string,
     skip?: number,

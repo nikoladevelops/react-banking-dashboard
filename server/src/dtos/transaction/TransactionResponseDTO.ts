@@ -1,7 +1,7 @@
 export default interface TransactionResponseDTO {
   id: string;
-  fromAccount: string;
-  toAccount: string;
+  fromAccountNumber: string;
+  toAccountNumber: string;
   amount: number;
   currency: string;
   status: string;

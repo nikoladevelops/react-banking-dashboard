@@ -5,12 +5,16 @@ import { UnauthorizedError } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import type { ITransaction } from "../models/Transaction.js";
 import type TransactionResponseDTO from "../dtos/transaction/TransactionResponseDTO.js";
+import type { IAccount } from "../models/Account.js";
 
 function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
+  const fromAcc = tx.fromAccount as unknown as IAccount;
+  const toAcc = tx.toAccount as unknown as IAccount;
+
   const dto: TransactionResponseDTO = {
     id: tx._id.toString(),
-    fromAccount: tx.fromAccount.toString(),
-    toAccount: tx.toAccount.toString(),
+    fromAccountNumber: fromAcc?.accountNumber || "Unknown",
+    toAccountNumber: toAcc?.accountNumber || "Unknown",
     amount: tx.amount,
     currency: tx.currency,
     status: tx.status,
@@ -19,8 +23,10 @@ function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
     createdAt: tx.createdAt,
     updatedAt: tx.updatedAt,
   };
+
   if (tx.reference) dto.reference = tx.reference;
   if (tx.approvedBy) dto.approvedBy = tx.approvedBy.toString();
+
   return dto;
 }
 
@@ -32,13 +38,11 @@ function getCurrentUserId(req: Request): string {
       ErrorKeys.auth.tokenMissing,
     );
   }
-
   return user.id;
 }
 
 export const getTransactionHistory = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-
   const limit = parseInt(req.query.limit as string);
   const skip = parseInt(req.query.offset as string);
 
@@ -68,6 +72,7 @@ export const getTransactionById = async (
 
 export const createTransaction = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
+
   const transaction = await transactionService.transferMoney(
     req.body,
     currentUserId,
