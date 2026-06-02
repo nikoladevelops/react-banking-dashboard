@@ -11,18 +11,31 @@ class TransactionRepository {
     return await Transaction.findById(id);
   }
 
-  async findAllByUser(userId: string, limit = 50): Promise<ITransaction[]> {
+  async findAllByUser(
+    userId: string,
+    skip?: number,
+    limit?: number,
+  ): Promise<ITransaction[]> {
     const accounts = await Account.find({ owner: userId }, "_id");
     const accountIds = accounts.map((acc) => acc._id);
-    return await Transaction.find({
+
+    let query = Transaction.find({
       $or: [
         { executedBy: userId },
         { fromAccount: { $in: accountIds } },
         { toAccount: { $in: accountIds } },
       ],
-    })
-      .sort({ transactionDate: -1 })
-      .limit(limit);
+    }).sort({ transactionDate: -1 });
+
+    if (skip !== undefined) {
+      query = query.skip(skip);
+    }
+
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
+
+    return await query.exec();
   }
 
   async createTransaction(

@@ -48,8 +48,8 @@ export const getAccountByIdOrThrow = async (
 
 export const getUserAccounts = async (
   currentUserId: string,
-  skip: number,
-  limit: number,
+  skip?: number,
+  limit?: number,
 ): Promise<IAccount[]> => {
   if (!isValidObjectId(currentUserId)) {
     throw new BadRequestError(

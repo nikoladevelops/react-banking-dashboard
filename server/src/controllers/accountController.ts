@@ -29,19 +29,21 @@ function getCurrentUserId(req: Request): string {
       ErrorKeys.auth.tokenMissing,
     );
   }
+
   return user.id;
 }
 
 export const getMyAccounts = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-  const limit = parseInt(req.query.limit as string) || 50;
-  const skip = parseInt(req.query.offset as string) || 0;
+  const limit = parseInt(req.query.limit as string);
+  const skip = parseInt(req.query.offset as string);
 
   const accounts = await accountService.getUserAccounts(
     currentUserId,
     skip,
     limit,
   );
+
   const response = accounts.map(toAccountResponseDTO);
   res.status(200).json(successResponse(response));
 };
@@ -55,6 +57,7 @@ export const getAccountById = async (
     req.params.id,
     currentUserId,
   );
+
   const response = toAccountResponseDTO(account);
   res.status(200).json(successResponse(response));
 };
@@ -76,6 +79,7 @@ export const updateAccount = async (
     req.body,
     currentUserId,
   );
+
   const response = toAccountResponseDTO(account);
   res.status(200).json(successResponse(response));
 };
@@ -89,6 +93,7 @@ export const deleteAccount = async (
     req.params.id,
     currentUserId,
   );
+
   const response = toAccountResponseDTO(account);
   res.status(200).json(successResponse(response));
 };

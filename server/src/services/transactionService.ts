@@ -57,9 +57,10 @@ export const getTransactionByIdOrThrow = async (
 
 export const getUserTransactions = async (
   currentUserId: string,
-  limit = 50,
+  skip?: number,
+  limit?: number,
 ): Promise<ITransaction[]> => {
-  return await transactionRepository.findAllByUser(currentUserId, limit);
+  return await transactionRepository.findAllByUser(currentUserId, skip, limit);
 };
 
 export const transferMoney = async (

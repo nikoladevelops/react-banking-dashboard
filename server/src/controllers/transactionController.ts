@@ -32,16 +32,22 @@ function getCurrentUserId(req: Request): string {
       ErrorKeys.auth.tokenMissing,
     );
   }
+
   return user.id;
 }
 
 export const getTransactionHistory = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-  const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 50;
+
+  const limit = parseInt(req.query.limit as string);
+  const skip = parseInt(req.query.offset as string);
+
   const transactions = await transactionService.getUserTransactions(
     currentUserId,
+    skip,
     limit,
   );
+
   const response = transactions.map(toTransactionResponseDTO);
   res.status(200).json(successResponse(response));
 };
@@ -55,6 +61,7 @@ export const getTransactionById = async (
     req.params.id,
     currentUserId,
   );
+
   const response = toTransactionResponseDTO(transaction);
   res.status(200).json(successResponse(response));
 };
@@ -65,6 +72,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     req.body,
     currentUserId,
   );
+
   const response = toTransactionResponseDTO(transaction);
   res.status(201).json(successResponse(response));
 };
