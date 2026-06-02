@@ -11,15 +11,11 @@ import {
 import { ErrorKeys } from "../constants/errorKeys.js";
 import { AccountStatus } from "../enums/account.enum.js";
 
-function isValidObjectId(id: string): boolean {
-  return mongoose.Types.ObjectId.isValid(id);
-}
-
 export const getTransactionByIdOrThrow = async (
   id: string,
   currentUserId: string,
 ): Promise<ITransaction> => {
-  if (!isValidObjectId(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new BadRequestError(
       "Invalid transaction ID",
       ErrorKeys.transactions.invalidId,
@@ -34,13 +30,12 @@ export const getTransactionByIdOrThrow = async (
     );
   }
 
-  // Authorisation: user must be executor or owner of either account
-  const fromAccount = await accountRepository.findById(
-    transaction.fromAccount.toString(),
+  // Authorization: check ownership via account numbers
+  const fromAccount = await accountRepository.findByAccountNumber(
+    transaction.fromAccountNumber,
   );
-
-  const toAccount = await accountRepository.findById(
-    transaction.toAccount.toString(),
+  const toAccount = await accountRepository.findByAccountNumber(
+    transaction.toAccountNumber,
   );
 
   const isOwner =
@@ -57,69 +52,54 @@ export const getTransactionByIdOrThrow = async (
 
 export const getUserTransactions = async (
   currentUserId: string,
-  limit = 50,
+  skip?: number,
+  limit?: number,
 ): Promise<ITransaction[]> => {
-  return await transactionRepository.findAllByUser(currentUserId, limit);
+  return await transactionRepository.findAllByUser(currentUserId, skip, limit);
 };
+
+const normalize = (val: string) => val.trim().toUpperCase();
 
 export const transferMoney = async (
   dto: CreateTransactionDTO,
   currentUserId: string,
 ): Promise<ITransaction> => {
-  if (!dto || typeof dto !== "object") {
+  if (!dto?.fromAccountNumber || !dto?.toAccountNumber) {
     throw new BadRequestError(
-      "Invalid request data",
-      ErrorKeys.validation.invalidData,
-    );
-  }
-
-  if (!dto.fromAccountId || !isValidObjectId(dto.fromAccountId)) {
-    throw new BadRequestError(
-      "Valid fromAccountId required",
+      "Account numbers required",
       ErrorKeys.transactions.fromAccountRequired,
     );
   }
 
-  if (!dto.toAccountId || !isValidObjectId(dto.toAccountId)) {
-    throw new BadRequestError(
-      "Valid toAccountId required",
-      ErrorKeys.transactions.toAccountRequired,
-    );
-  }
+  const fromNumber = normalize(dto.fromAccountNumber);
+  const toNumber = normalize(dto.toAccountNumber);
 
-  if (dto.fromAccountId === dto.toAccountId) {
+  if (fromNumber === toNumber) {
     throw new BadRequestError(
       "Cannot transfer to same account",
       ErrorKeys.transactions.transferToSameAccountImpossible,
     );
   }
 
-  if (dto.amount === undefined || dto.amount === null) {
-    throw new BadRequestError(
-      "Amount required",
-      ErrorKeys.transactions.amountRequired,
-    );
-  }
-
   if (typeof dto.amount !== "number" || dto.amount <= 0) {
     throw new BadRequestError(
-      "Amount must be a positive number",
+      "Amount must be positive",
       ErrorKeys.transactions.amountHasToBePositive,
     );
   }
 
   const amountCents = Math.round(dto.amount * 100);
 
-  const fromAccount = await accountRepository.findById(dto.fromAccountId);
-  const toAccount = await accountRepository.findById(dto.toAccountId);
+  const fromAccount = await accountRepository.findByAccountNumber(fromNumber);
+  const toAccount = await accountRepository.findByAccountNumber(toNumber);
+
   if (!fromAccount || !toAccount) {
     throw new NotFoundError(
-      "One or both accounts not found",
+      "Accounts not found",
       ErrorKeys.transactions.accountNotFound,
     );
   }
 
-  // Ownership check
   if (fromAccount.owner.toString() !== currentUserId) {
     throw new ForbiddenError(
       "You do not own the source account",
@@ -127,30 +107,23 @@ export const transferMoney = async (
     );
   }
 
-  // Account status checks
-  if (fromAccount.status !== AccountStatus.ACTIVE) {
+  if (
+    fromAccount.status !== AccountStatus.ACTIVE ||
+    toAccount.status !== AccountStatus.ACTIVE
+  ) {
     throw new BadRequestError(
-      "Source account is not active",
+      "One or both accounts are not active",
       ErrorKeys.transactions.accountNotActive,
     );
   }
 
-  if (toAccount.status !== AccountStatus.ACTIVE) {
-    throw new BadRequestError(
-      "Destination account is not active",
-      ErrorKeys.transactions.accountNotActive,
-    );
-  }
-
-  // Currency check
   if (fromAccount.currency !== toAccount.currency) {
     throw new BadRequestError(
-      "Currency mismatch – conversion not supported",
+      "Currency mismatch",
       ErrorKeys.transactions.currencyConversionImpossible,
     );
   }
 
-  // Sufficient balance
   if (fromAccount.balance < amountCents) {
     throw new BadRequestError(
       "Insufficient balance",
@@ -159,11 +132,12 @@ export const transferMoney = async (
   }
 
   return await transactionRepository.transferBetweenAccounts(
-    fromAccount._id.toString(),
-    toAccount._id.toString(),
+    fromAccount.accountNumber,
+    toAccount.accountNumber,
     amountCents,
     fromAccount.currency,
-    dto.reference?.trim(),
+    dto.title,
+    dto.description,
     new mongoose.Types.ObjectId(currentUserId),
   );
 };

@@ -1,6 +1,8 @@
 export default interface CreateTransactionDTO {
-  fromAccountId: string;
-  toAccountId: string;
-  amount: number; // in major units (e.g., 100.50)
-  reference?: string;
+  fromAccountNumber: string;
+  toAccountNumber: string;
+  title: string;
+  description?: string;
+  amount: number;
+  currency: string;
 }

@@ -5,12 +5,14 @@ import { UnauthorizedError } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import type { ITransaction } from "../models/Transaction.js";
 import type TransactionResponseDTO from "../dtos/transaction/TransactionResponseDTO.js";
+import type { IAccount } from "../models/Account.js";
 
 function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
   const dto: TransactionResponseDTO = {
     id: tx._id.toString(),
-    fromAccount: tx.fromAccount.toString(),
-    toAccount: tx.toAccount.toString(),
+    fromAccountNumber: tx.fromAccountNumber,
+    toAccountNumber: tx.toAccountNumber,
+    title: tx.title,
     amount: tx.amount,
     currency: tx.currency,
     status: tx.status,
@@ -19,8 +21,9 @@ function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
     createdAt: tx.createdAt,
     updatedAt: tx.updatedAt,
   };
-  if (tx.reference) dto.reference = tx.reference;
+
   if (tx.approvedBy) dto.approvedBy = tx.approvedBy.toString();
+  if (tx.description) dto.description = tx.description;
   return dto;
 }
 
@@ -37,11 +40,15 @@ function getCurrentUserId(req: Request): string {
 
 export const getTransactionHistory = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-  const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 50;
+  const limit = parseInt(req.query.limit as string) || 5;
+  const skip = parseInt(req.query.offset as string) || 0;
+
   const transactions = await transactionService.getUserTransactions(
     currentUserId,
+    skip,
     limit,
   );
+
   const response = transactions.map(toTransactionResponseDTO);
   res.status(200).json(successResponse(response));
 };
@@ -55,16 +62,19 @@ export const getTransactionById = async (
     req.params.id,
     currentUserId,
   );
+
   const response = toTransactionResponseDTO(transaction);
   res.status(200).json(successResponse(response));
 };
 
 export const createTransaction = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
+
   const transaction = await transactionService.transferMoney(
     req.body,
     currentUserId,
   );
+
   const response = toTransactionResponseDTO(transaction);
   res.status(201).json(successResponse(response));
 };
