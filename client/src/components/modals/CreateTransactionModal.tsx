@@ -17,7 +17,8 @@ export interface TransactionFormValues {
   toAccountNumber: string;
   amount: number;
   currency: string;
-  reference: string;
+  title: string;
+  description: string;
 }
 
 type TransferMode = "internal" | "external";
@@ -42,7 +43,8 @@ export const CreateTransactionModal = ({
         toAccountNumber: "",
         amount: 0,
         currency: Currency.USD,
-        reference: "",
+        title: "",
+        description: "",
       },
     });
 
@@ -70,7 +72,8 @@ export const CreateTransactionModal = ({
       toAccountNumber: data.toAccountNumber,
       amount: data.amount,
       currency: selectedAccount ? selectedAccount.currency : data.currency,
-      reference: data.reference,
+      title: data.title,
+      description: data.description,
     };
 
     createTransaction(payload, {
@@ -163,6 +166,26 @@ export const CreateTransactionModal = ({
                   className="mt-1 w-full rounded border border-gray-300 p-2 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900 dark:text-gray-300">
+                {t("modals.transaction.titleField")}
+              </label>
+              <input
+                {...register("title", { required: true })}
+                className="mt-1 w-full rounded border border-gray-300 p-2 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900 dark:text-gray-300">
+                {t("modals.transaction.descriptionField")}
+              </label>
+              <textarea
+                {...register("description")}
+                className="mt-1 w-full rounded border border-gray-300 p-2 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+              />
             </div>
 
             <div>

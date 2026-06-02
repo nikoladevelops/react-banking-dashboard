@@ -8,13 +8,11 @@ import type TransactionResponseDTO from "../dtos/transaction/TransactionResponse
 import type { IAccount } from "../models/Account.js";
 
 function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
-  const fromAcc = tx.fromAccount as unknown as IAccount;
-  const toAcc = tx.toAccount as unknown as IAccount;
-
   const dto: TransactionResponseDTO = {
     id: tx._id.toString(),
-    fromAccountNumber: fromAcc?.accountNumber || "Unknown",
-    toAccountNumber: toAcc?.accountNumber || "Unknown",
+    fromAccountNumber: tx.fromAccountNumber,
+    toAccountNumber: tx.toAccountNumber,
+    title: tx.title,
     amount: tx.amount,
     currency: tx.currency,
     status: tx.status,
@@ -24,9 +22,8 @@ function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
     updatedAt: tx.updatedAt,
   };
 
-  if (tx.reference) dto.reference = tx.reference;
   if (tx.approvedBy) dto.approvedBy = tx.approvedBy.toString();
-
+  if (tx.description) dto.description = tx.description;
   return dto;
 }
 
@@ -43,8 +40,8 @@ function getCurrentUserId(req: Request): string {
 
 export const getTransactionHistory = async (req: Request, res: Response) => {
   const currentUserId = getCurrentUserId(req);
-  const limit = parseInt(req.query.limit as string);
-  const skip = parseInt(req.query.offset as string);
+  const limit = parseInt(req.query.limit as string) || 5;
+  const skip = parseInt(req.query.offset as string) || 0;
 
   const transactions = await transactionService.getUserTransactions(
     currentUserId,

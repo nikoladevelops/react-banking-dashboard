@@ -16,24 +16,19 @@ class TransactionRepository {
     skip?: number,
     limit?: number,
   ): Promise<ITransaction[]> {
-    const accounts = await Account.find({ owner: userId }, "_id");
-    const accountIds = accounts.map((acc) => acc._id);
+    const userAccounts = await Account.find({ owner: userId }, "accountNumber");
+    const accountNumbers = userAccounts.map((acc) => acc.accountNumber);
 
     let query = Transaction.find({
       $or: [
         { executedBy: userId },
-        { fromAccount: { $in: accountIds } },
-        { toAccount: { $in: accountIds } },
+        { fromAccountNumber: { $in: accountNumbers } },
+        { toAccountNumber: { $in: accountNumbers } },
       ],
     }).sort({ transactionDate: -1 });
 
-    if (skip !== undefined) {
-      query = query.skip(skip);
-    }
-
-    if (limit !== undefined) {
-      query = query.limit(limit);
-    }
+    if (skip !== undefined) query = query.skip(skip);
+    if (limit !== undefined) query = query.limit(limit);
 
     return await query.exec();
   }
@@ -43,18 +38,18 @@ class TransactionRepository {
     session?: mongoose.ClientSession,
   ): Promise<ITransaction> {
     const transaction = new Transaction(data);
-    if (session) {
-      return await transaction.save({ session });
-    }
-    return await transaction.save();
+    return session
+      ? await transaction.save({ session })
+      : await transaction.save();
   }
 
   async transferBetweenAccounts(
-    fromAccountId: string,
-    toAccountId: string,
+    fromAccountNumber: string,
+    toAccountNumber: string,
     amountCents: number,
     currency: string,
-    reference: string | undefined,
+    title: string,
+    description: string | undefined,
     executedBy: Types.ObjectId,
   ): Promise<ITransaction> {
     if (amountCents <= 0) {
@@ -68,46 +63,44 @@ class TransactionRepository {
     session.startTransaction();
 
     try {
-      const fromAccount = await Account.findByIdAndUpdate(
-        fromAccountId,
+      const fromAcc = await Account.findOneAndUpdate(
+        { accountNumber: fromAccountNumber },
         { $inc: { balance: -amountCents } },
         { session, new: true },
       );
-      const toAccount = await Account.findByIdAndUpdate(
-        toAccountId,
+
+      const toAcc = await Account.findOneAndUpdate(
+        { accountNumber: toAccountNumber },
         { $inc: { balance: +amountCents } },
         { session, new: true },
       );
 
-      if (!fromAccount) {
+      if (!fromAcc)
         throw new BadRequestError(
-          "From account not found",
+          "Source account not found",
           ErrorKeys.transactions.fromAccountRequired,
         );
-      }
-
-      if (!toAccount) {
+      if (!toAcc)
         throw new BadRequestError(
-          "To account not found",
+          "Destination account not found",
           ErrorKeys.transactions.toAccountRequired,
         );
-      }
 
-      // Create transaction
       const transaction = new Transaction({
-        fromAccount: fromAccount._id,
-        toAccount: toAccount._id,
+        fromAccountNumber,
+        toAccountNumber,
+        title,
+        description,
         amount: amountCents,
         currency,
         status: TransactionStatus.COMPLETED,
-        reference,
         transactionDate: new Date(),
         executedBy,
       });
-      await transaction.save({ session });
 
+      const savedTx = await transaction.save({ session });
       await session.commitTransaction();
-      return transaction;
+      return savedTx;
     } catch (error) {
       await session.abortTransaction();
       throw error;

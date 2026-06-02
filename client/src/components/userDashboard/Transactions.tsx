@@ -65,8 +65,9 @@ export const Transactions = () => {
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
+                {/* Refactored to display tx.title */}
                 <h2 className="font-semibold text-gray-900 dark:text-white">
-                  {tx.reference || t("dashboard.transactions.noReference")}
+                  {tx.title}
                 </h2>
                 <p className="text-sm dark:text-gray-400">
                   {t("dashboard.transactions.from")}: {tx.fromAccountNumber}

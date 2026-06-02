@@ -5,6 +5,8 @@ export interface Transaction {
   id: string;
   fromAccountNumber: string;
   toAccountNumber: string;
+  title: string;
+  description?: string;
   amount: number; // in cents
   currency: string;
   status: string;
@@ -12,7 +14,6 @@ export interface Transaction {
   executedBy: string;
   createdAt: string;
   updatedAt: string;
-  reference?: string;
   approvedBy?: string;
 }
 
@@ -47,7 +48,8 @@ export const useCreateTransaction = () => {
       toAccountNumber: string;
       amount: number;
       currency: string;
-      reference?: string;
+      title: string;
+      description?: string;
     }) => api.post("/transactions", data).then((res) => res.data.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
