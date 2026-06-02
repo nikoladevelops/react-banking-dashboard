@@ -83,7 +83,9 @@
       "otherUser": "To another person",
       "from": "From Account",
       "to": "To Account / IBAN",
-      "amount": "Amount"
+      "amount": "Amount",
+      "titleField": "Title",
+      "descriptionField": "Description"
     },
     "confirmation": { "confirm": "Yes" }
   },

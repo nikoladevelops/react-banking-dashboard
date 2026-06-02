@@ -95,7 +95,7 @@ export const CreateTransactionModal = ({
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-900"
+        className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-custom-dark"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="mb-6 text-xl font-bold text-gray-900 dark:text-white">

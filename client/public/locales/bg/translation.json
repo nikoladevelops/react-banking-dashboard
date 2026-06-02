@@ -83,7 +83,9 @@
       "otherUser": "Към друго лице",
       "from": "От сметка",
       "to": "Към сметка / IBAN",
-      "amount": "Сума"
+      "amount": "Сума",
+      "titleField": "Заглавие",
+      "descriptionField": "Описание"
     },
     "confirmation": { "confirm": "Да" }
   },

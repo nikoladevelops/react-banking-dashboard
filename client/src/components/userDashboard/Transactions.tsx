@@ -61,11 +61,10 @@ export const Transactions = () => {
         {transactions.map((tx) => (
           <div
             key={tx.id}
-            className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+            className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-custom-dark"
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                {/* Refactored to display tx.title */}
                 <h2 className="font-semibold text-gray-900 dark:text-white">
                   {tx.title}
                 </h2>
