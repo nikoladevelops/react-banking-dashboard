@@ -156,15 +156,15 @@
   },
 
   "brand": {
-    "name": "FiBank"
+    "name": "Fibank"
   },
 
   "home": {
     "hero": {
-      "pretitle": "Welcome to FiBank",
+      "pretitle": "Welcome to Fibank",
       "title": "Modern banking that works for you",
-      "subtitle": "FiBank is built for the way you live today — fast, secure, and thoughtful banking with clear pricing and delightful tools to help you reach your goals.",
-      "ctaStart": "Get started — it's free",
+      "subtitle": "Fibank is built for the way you live today - fast, secure, and thoughtful banking with clear pricing and delightful tools to help you reach your goals.",
+      "ctaStart": "Get started - it's free",
       "ctaLearn": "Learn more"
     },
     "signup": {
@@ -172,7 +172,7 @@
       "placeholder": "Enter your email",
       "signing": "Signing up...",
       "notify": "Notify me",
-      "success": "Thanks — we'll be in touch!",
+      "success": "Thanks - we'll be in touch!",
       "error": "Please enter a valid email address."
     },
     "stats": {
@@ -196,18 +196,18 @@
     },
     "features": {
       "title": "Designed for real life",
-      "subtitle": "From everyday spending to long-term savings, FiBank brings you modern tools and human support.",
+      "subtitle": "From everyday spending to long-term savings, Fibank brings you modern tools and human support.",
       "secure": {
         "title": "Secure by design",
         "desc": "Bank-level encryption, multi-factor authentication, and real-time fraud monitoring keep your money safe."
       },
       "fast": {
         "title": "Fast transfers",
-        "desc": "Instant transfers between FiBank accounts and fast settlement to external banks."
+        "desc": "Instant transfers between Fibank accounts and fast settlement to external banks."
       },
       "mobile": {
         "title": "Mobile-first experience",
-        "desc": "A beautiful, performant app — move money, deposit checks, and track spending from your phone."
+        "desc": "A beautiful, performant app - move money, deposit checks, and track spending from your phone."
       },
       "support": {
         "title": "Customer-first support",
@@ -236,7 +236,7 @@
         "cta": "Start saving"
       },
       "premium": {
-        "title": "FiBank Premium",
+        "title": "Fibank Premium",
         "desc": "Priority support, boosted rates, and exclusive benefits.",
         "price": "$12 / mo",
         "feature1": "Higher interest rates",
@@ -267,29 +267,29 @@
     },
     "testimonials": {
       "title": "What customers say",
-      "1": "\"FiBank made switching banks painless — and the app is actually delightful to use.\"",
+      "1": "\"Fibank made switching banks painless - and the app is actually delightful to use.\"",
       "2": "\"Great rates on savings and support that responds. Highly recommend.\"",
-      "3": "\"I use FiBank every day for budgeting and paying bills — it's reliable and fast.\""
+      "3": "\"I use Fibank every day for budgeting and paying bills - it's reliable and fast.\""
     },
     "faq": {
       "title": "Frequently asked questions",
       "q1": "How long does it take to open an account?",
-      "a1": "Opening a FiBank account is quick. Most customers are approved within minutes and can start using their accounts right away.",
+      "a1": "Opening a Fibank account is quick. Most customers are approved within minutes and can start using their accounts right away.",
       "q2": "Is my money insured?",
-      "a2": "Yes — FiBank partners with insured institutions to ensure deposits are protected according to applicable regulations.",
+      "a2": "Yes - Fibank partners with insured institutions to ensure deposits are protected according to applicable regulations.",
       "q3": "Can I connect my accounts to third-party services?",
-      "a3": "You can securely connect your FiBank accounts to authorized third-party apps via our APIs and integrations."
+      "a3": "You can securely connect your Fibank accounts to authorized third-party apps via our APIs and integrations."
     }
   },
 
   "about": {
     "hero": {
-      "title": "About FiBank",
+      "title": "About Fibank",
       "subtitle": "We build modern banking for everyone, with transparency and care."
     },
     "mission": {
       "title": "Our mission",
-      "content": "To simplify money for people — better tools, fair pricing, and outstanding service."
+      "content": "To simplify money for people - better tools, fair pricing, and outstanding service."
     },
     "values": {
       "title": "Our values",
@@ -301,17 +301,41 @@
       "title": "The team",
       "content": "A small team of engineers, designers, and bankers dedicated to great products."
     },
-    "cta": { "title": "Join us", "button": "Careers" }
+    "cta": { "title": "Join us", "button": "Careers" },
+    "why": {
+      "title": "Why Fibank",
+      "p1": "We focus on security and user experience.",
+      "p2": "Transparent pricing and no hidden fees.",
+      "p3": "Fast onboarding and human support when you need it."
+    },
+    "teamMembers": {
+      "member1": {
+        "name": "A. Ramirez",
+        "role": "CEO",
+        "bio": "Leads the product and vision with 10+ years in fintech."
+      },
+      "member2": {
+        "name": "J. Patel",
+        "role": "Head of Engineering",
+        "bio": "Builds reliable systems and developer-friendly APIs."
+      },
+      "member3": {
+        "name": "S. Lee",
+        "role": "Head of Support",
+        "bio": "Ensures customers get timely, helpful assistance."
+      }
+    }
   },
 
   "help": {
     "hero": {
       "title": "Help & Support",
-      "subtitle": "We're here to help — find answers or contact support."
+      "subtitle": "We're here to help - find answers or contact support."
     },
     "support": {
       "title": "Contact support",
-      "content": "Email us at support@fibank.example or call +1 (555) 123-4567."
+      "content": "Email us at support@fibank.example or call +1 (555) 123-4567.",
+      "hours": "Support hours: Mon-Fri 8:00-18:00 UTC"
     },
     "faq": {
       "title": "Popular questions",
@@ -326,7 +350,7 @@
 
   "mobile": {
     "hero": {
-      "title": "FiBank on mobile",
+      "title": "Fibank on mobile",
       "subtitle": "Banking on the go: fast, secure, and delightful."
     },
     "features": {
@@ -335,7 +359,22 @@
       "f2": "Remote check deposit",
       "f3": "Secure biometric login"
     },
-    "cta": { "download": "Download the app" }
+    "cta": { "download": "Download the app" },
+    "store": {
+      "ios": "Download on the App Store",
+      "android": "Get it on Google Play"
+    }
+  },
+
+  "notfound": {
+    "code": "404",
+    "message": "Page not found",
+    "goHome": "Go home"
+  },
+
+  "loading": {
+    "loading": "Loading...",
+    "message": "Please wait while we load your content."
   },
 
   "terms": {
@@ -343,16 +382,24 @@
     "intro": "These are sample terms. Replace with your legal text.",
     "section1": {
       "title": "Usage",
-      "content": "By using FiBank you agree to these terms."
+      "content": "By using Fibank you agree to these terms."
     },
     "section2": {
       "title": "Privacy",
       "content": "We respect your privacy and protect your data."
+    },
+    "liability": {
+      "title": "Liability",
+      "content": "Fibank is not liable for indirect damages - please consult the full terms."
+    },
+    "governing": {
+      "title": "Governing law",
+      "content": "These terms are governed by the laws of the jurisdiction where Fibank operates."
     }
   },
 
   "footer": {
-    "title": "FiBank",
+    "title": "Fibank",
     "description": "Simple banking, thoughtful tools, and a team that cares.",
     "product": {
       "title": "Product",

@@ -4,7 +4,7 @@ const Help = () => {
   const { t } = useTranslation();
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-[var(--color-custom-dark)] text-gray-800 dark:text-gray-200 px-6 py-16">
+    <main className="min-h-screen bg-gray-50 dark:bg-custom-dark text-gray-800 dark:text-gray-200 px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <header className="text-center">
           <h1 className="text-4xl font-extrabold">{t("help.hero.title")}</h1>
@@ -18,6 +18,17 @@ const Help = () => {
           <p className="mt-3 text-gray-600 dark:text-gray-300">
             {t("help.support.content")}
           </p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+            {t("help.support.hours")}
+          </p>
+          <div className="mt-4">
+            <a
+              href="mailto:support@fibank.example"
+              className="text-indigo-600 hover:underline dark:text-green-400"
+            >
+              support@fibank.example
+            </a>
+          </div>
         </section>
 
         <section className="mt-10">

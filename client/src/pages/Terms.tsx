@@ -4,7 +4,7 @@ const Terms = () => {
   const { t } = useTranslation();
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-[var(--color-custom-dark)] text-gray-800 dark:text-gray-200 px-6 py-16">
+    <main className="min-h-screen bg-gray-50 dark:bg-custom-dark text-gray-800 dark:text-gray-200 px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <h1 className="text-3xl font-extrabold">{t("terms.title")}</h1>
         <p className="mt-4 text-gray-600 dark:text-gray-300">

@@ -5,7 +5,7 @@ const Mobile = () => {
   const { t } = useTranslation();
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-[var(--color-custom-dark)] text-gray-800 dark:text-gray-200 px-6 py-16">
+    <main className="min-h-screen bg-gray-50 dark:bg-custom-dark text-gray-800 dark:text-gray-200 px-6 py-16">
       <div className="mx-auto max-w-5xl">
         <header className="text-center">
           <h1 className="text-4xl font-extrabold">{t("mobile.hero.title")}</h1>
@@ -15,9 +15,9 @@ const Mobile = () => {
         </header>
 
         <section className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="rounded-xl border p-6 bg-white dark:bg-[var(--color-custom-dark)]">
+          <div className="rounded-xl border p-6 bg-white dark:bg-custom-dark">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded bg-gray-50 dark:bg-[var(--color-custom-dark)]">
+              <span className="p-2 rounded bg-gray-50 dark:bg-custom-dark">
                 <MobileIcon className="text-cyan-500 dark:text-green-400" />
               </span>
               <div>
@@ -26,9 +26,9 @@ const Mobile = () => {
             </div>
           </div>
 
-          <div className="rounded-xl border p-6 bg-white dark:bg-[var(--color-custom-dark)]">
+          <div className="rounded-xl border p-6 bg-white dark:bg-custom-dark">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded bg-gray-50 dark:bg-[var(--color-custom-dark)]">
+              <span className="p-2 rounded bg-gray-50 dark:bg-custom-dark">
                 <LightningIcon className="text-yellow-500 dark:text-green-400" />
               </span>
               <div>
@@ -37,9 +37,9 @@ const Mobile = () => {
             </div>
           </div>
 
-          <div className="rounded-xl border p-6 bg-white dark:bg-[var(--color-custom-dark)]">
+          <div className="rounded-xl border p-6 bg-white dark:bg-custom-dark">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded bg-gray-50 dark:bg-[var(--color-custom-dark)]">
+              <span className="p-2 rounded bg-gray-50 dark:bg-custom-dark">
                 <ShieldIcon className="text-indigo-500 dark:text-green-400" />
               </span>
               <div>

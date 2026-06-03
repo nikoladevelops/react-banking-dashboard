@@ -32,7 +32,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-[var(--color-custom-dark)] text-gray-900 dark:text-gray-100">
+      <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-custom-dark text-gray-900 dark:text-gray-100">
         <NavBar />
         <main className="flex-1">
           <Routes>
@@ -71,7 +71,7 @@ function App() {
         </main>
 
         {/* Footer (shared) */}
-        <footer className="bg-gray-900 text-gray-300 dark:bg-[var(--color-custom-dark)] dark:text-gray-300">
+        <footer className="bg-gray-900 text-gray-300 dark:bg-custom-dark dark:text-gray-300">
           <div className="mx-auto max-w-7xl px-6 py-12">
             <div className="flex flex-col md:flex-row justify-between items-start gap-6">
               <div>
@@ -106,7 +106,7 @@ function App() {
 
             <div className="mt-8 border-t border-gray-800 dark:border-white/10 pt-6 text-sm text-gray-500 dark:text-gray-400 flex flex-col md:flex-row justify-between">
               <div>
-                © {new Date().getFullYear()} {t("footer.title")} —{" "}
+                © {new Date().getFullYear()} {t("footer.title")} -{" "}
                 {t("footer.rights")}
               </div>
               <div className="mt-3 md:mt-0">{t("footer.built")}</div>
