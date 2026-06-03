@@ -1,3 +1,4 @@
+import { z } from "zod";
 import * as userService from "./userService.js";
 import type RegisterUserDTO from "../dtos/auth/RegisterUserDTO.js";
 import {
@@ -11,26 +12,91 @@ import { generateToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
 import type LoginUserDTO from "../dtos/auth/LoginUserDTO.js";
 import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const cyrillicRegex = /^[\u0400-\u04FF\s]+$/;
+const latinRegex = /^[a-zA-Z\s]+$/;
+const phoneRegex = /^\+?[\d\-. ]{7,15}$/;
+const passwordRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+const registerSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .refine((val) => val.length >= 3, {
+      params: { code: ErrorKeys.auth.usernameInvalid },
+    }),
+  password: z
+    .string()
+    .refine((val) => val.length >= 8 && passwordRegex.test(val), {
+      params: { code: ErrorKeys.auth.passwordInvalid },
+    }),
+  email: z
+    .string()
+    .trim()
+    .refine((val) => emailRegex.test(val), {
+      params: { code: ErrorKeys.auth.emailInvalid },
+    }),
+  egn: z
+    .string()
+    .trim()
+    .refine((val) => /^\d{10}$/.test(val), {
+      params: { code: ErrorKeys.auth.egnInvalid },
+    }),
+  identityDoc: z.string().trim().optional().or(z.literal("")),
+  fullNameCyrillic: z
+    .string()
+    .trim()
+    .refine((val) => cyrillicRegex.test(val), {
+      params: { code: ErrorKeys.auth.nameCyrillicInvalid },
+    }),
+  fullNameLatin: z
+    .string()
+    .trim()
+    .refine((val) => latinRegex.test(val), {
+      params: { code: ErrorKeys.auth.nameLatinInvalid },
+    }),
+  phone: z
+    .string()
+    .trim()
+    .refine((val) => phoneRegex.test(val), {
+      params: { code: ErrorKeys.auth.phoneInvalid },
+    }),
+  address: z
+    .string()
+    .trim()
+    .refine((val) => val.length >= 5, {
+      params: { code: ErrorKeys.auth.addressInvalid },
+    }),
+});
+
 export const register = async (
   dto: RegisterUserDTO,
 ): Promise<AuthResponseDTO> => {
-  const { username: inputUsername, password } = dto;
+  const { confirmPassword, ...registerData } = dto;
 
-  if (!inputUsername) {
+  const result = registerSchema.safeParse(registerData);
+  if (!result.success) {
+    const firstIssue = result.error.issues[0];
+
+    const errorCode =
+      firstIssue && firstIssue.code === "custom" && firstIssue.params
+        ? (firstIssue.params.code as string)
+        : ErrorKeys.users.missingRequiredFields;
+
+    throw new BadRequestError("Validation failed", errorCode);
+  }
+
+  if (registerData.password !== confirmPassword) {
     throw new BadRequestError(
-      "Username is required",
-      ErrorKeys.auth.usernameRequired,
+      "Passwords do not match",
+      ErrorKeys.auth.passwordsDoNotMatch,
     );
   }
 
-  if (!password) {
-    throw new BadRequestError(
-      "Password is required",
-      ErrorKeys.auth.passwordRequired,
-    );
-  }
-
-  const existingUser = await userService.getUserByUsername(inputUsername);
+  const [existingUser, existingEmail] = await Promise.all([
+    userService.getUserByUsername(registerData.username),
+    userService.getUserByEmail(registerData.email),
+  ]);
 
   if (existingUser) {
     throw new ConflictError(
@@ -38,9 +104,14 @@ export const register = async (
       ErrorKeys.auth.usernameAlreadyTaken,
     );
   }
+  if (existingEmail) {
+    throw new ConflictError(
+      "Email already registered",
+      ErrorKeys.users.emailAlreadyTaken,
+    );
+  }
 
-  const createUserDto: CreateUserDTO = { username: inputUsername, password };
-  const newUser = await userService.createUser(createUserDto);
+  const newUser = await userService.createUser(registerData as CreateUserDTO);
 
   const payload: AuthTokenPayload = {
     id: newUser._id.toString(),
@@ -48,41 +119,30 @@ export const register = async (
     role: newUser.role,
   };
 
-  const token = generateToken(payload);
-
-  return { tokenPayload: payload, token };
+  return { tokenPayload: payload, token: generateToken(payload) };
 };
 
 export const login = async (dto: LoginUserDTO): Promise<AuthResponseDTO> => {
-  const { username: inputUsername, password } = dto;
-
-  if (!inputUsername) {
+  if (!dto?.username || !dto?.password) {
     throw new BadRequestError(
-      "Username is required",
-      ErrorKeys.auth.usernameRequired,
+      "Missing credentials",
+      ErrorKeys.auth.invalidCredentials,
     );
   }
 
-  if (!password) {
-    throw new BadRequestError(
-      "Password is required",
-      ErrorKeys.auth.passwordRequired,
-    );
-  }
+  const user = await userService.getUserByUsername(dto.username);
 
-  const user = await userService.getUserByUsername(inputUsername);
-  if (!user) {
+  if (!user || !(await user.comparePassword(dto.password))) {
     throw new UnauthorizedError(
       "Invalid credentials",
       ErrorKeys.auth.invalidCredentials,
     );
   }
 
-  const isMatch = await user.comparePassword(password);
-  if (!isMatch) {
+  if (user.isBlocked) {
     throw new UnauthorizedError(
-      "Invalid credentials",
-      ErrorKeys.auth.invalidCredentials,
+      "Account is blocked",
+      ErrorKeys.auth.accountBlocked,
     );
   }
 
@@ -92,7 +152,5 @@ export const login = async (dto: LoginUserDTO): Promise<AuthResponseDTO> => {
     role: user.role,
   };
 
-  const token = generateToken(payload);
-
-  return { tokenPayload: payload, token };
+  return { tokenPayload: payload, token: generateToken(payload) };
 };

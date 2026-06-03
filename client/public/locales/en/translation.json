@@ -14,7 +14,14 @@
     "register": "Register",
     "username": "Username",
     "password": "Password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "identityDoc": "LNCH or Passport",
+    "fullNameCyrillic": "Full Name (Cyrillic)",
+    "fullNameLatin": "Full Name (Latin)",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "egn": "EGN"
   },
   "login-form": {
     "login": "Login",
@@ -96,7 +103,18 @@
       "invalidCredentials": "Wrong username or password",
       "usernameAlreadyTaken": "Username is already taken",
       "tokenMissing": "Token is missing",
-      "tokenInvalid": "Token is invalid"
+      "tokenInvalid": "Token is invalid",
+      "required": "Field is required",
+      "usernameInvalid": "Username should contain at least 3 characters",
+      "passwordInvalid": "Password should contain at least 8 characters and include at least one special character",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "egnInvalid": "EGN should contain 10 digits",
+      "nameCyrillicInvalid": "Name should contain only Cyrillic characters",
+      "nameLatinInvalid": "Name should contain only Latin characters",
+      "emailInvalid": "Should be a valid email address",
+      "phoneInvalid": "Should be a valid phone number (7-15 digits long)",
+      "addressInvalid": "Should contain at least 5 characters",
+      "accountBlocked": "Account is blocked. Contact support to unblock it."
     },
     "users": {
       "userNotFound": "User not found",

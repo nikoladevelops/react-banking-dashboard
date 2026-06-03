@@ -24,36 +24,43 @@ export const getUserByUsername = async (
   return await userRepository.findByUsername(username);
 };
 
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+  return await userRepository.findByEmail(email);
+};
+
 export const getUserByIdOrThrow = async (id: string): Promise<IUser> => {
   const user = await getUserById(id);
-
   if (!user) {
     throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }
-
   return user;
 };
 
 export const createUser = async (dto: CreateUserDTO): Promise<IUser> => {
-  if (!dto.username) {
+  if (
+    !dto.username ||
+    !dto.password ||
+    !dto.email ||
+    !dto.egn ||
+    !dto.fullNameLatin
+  ) {
     throw new BadRequestError(
-      "Username required",
-      ErrorKeys.users.usernameRequired,
+      "Missing required fields",
+      ErrorKeys.users.missingRequiredFields,
     );
   }
 
-  if (!dto.password) {
-    throw new BadRequestError(
-      "Password required",
-      ErrorKeys.users.passwordRequired,
-    );
-  }
-
-  const existing = await getUserByUsername(dto.username);
-  if (existing) {
+  if (await getUserByUsername(dto.username)) {
     throw new ConflictError(
       "Username already taken",
       ErrorKeys.auth.usernameAlreadyTaken,
+    );
+  }
+
+  if (await getUserByEmail(dto.email)) {
+    throw new ConflictError(
+      "Email already registered",
+      ErrorKeys.users.emailAlreadyTaken,
     );
   }
 
@@ -72,9 +79,9 @@ export const updateUser = async (
     throw new BadRequestError("Invalid user ID", ErrorKeys.users.invalidUserId);
   }
 
-  if (dto.username === undefined && dto.password === undefined) {
+  if (Object.keys(dto).length === 0) {
     throw new BadRequestError(
-      "At least one field required",
+      "No update data provided",
       ErrorKeys.users.updateFieldsRequired,
     );
   }
@@ -85,13 +92,17 @@ export const updateUser = async (
   }
 
   if (dto.username && dto.username !== currentUser.username) {
-    const userExists = await getUserByUsername(dto.username);
-
-    if (userExists) {
+    if (await getUserByUsername(dto.username)) {
       throw new ConflictError(
-        "Username already taken",
+        "Username taken",
         ErrorKeys.auth.usernameAlreadyTaken,
       );
+    }
+  }
+
+  if (dto.email && dto.email !== currentUser.email) {
+    if (await getUserByEmail(dto.email)) {
+      throw new ConflictError("Email taken", ErrorKeys.users.emailAlreadyTaken);
     }
   }
 
@@ -109,7 +120,6 @@ export const deleteUser = async (id: string): Promise<IUser> => {
   }
 
   const deleted = await userRepository.deleteUser(id);
-
   if (!deleted) {
     throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
   }

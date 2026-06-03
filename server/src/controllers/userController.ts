@@ -3,11 +3,19 @@ import * as userService from "../services/userService.js";
 import { successResponse } from "../utils/response.js";
 import type { IUser } from "../models/User.js";
 import type UserResponseDTO from "../dtos/user/UserResponseDTO.js";
+import { BadRequestError } from "../utils/errors.js";
+import { ErrorKeys } from "../constants/errorKeys.js";
 
 function toUserResponseDTO(user: IUser): UserResponseDTO {
   return {
     id: user._id.toString(),
     username: user.username,
+    email: user.email,
+    fullNameLatin: user.fullNameLatin,
+    fullNameCyrillic: user.fullNameCyrillic,
+    isBlocked: user.isBlocked,
+    role: user.role,
+    egn: user.egn,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
@@ -15,8 +23,7 @@ function toUserResponseDTO(user: IUser): UserResponseDTO {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await userService.getAllUsers();
-  const response = users.map(toUserResponseDTO);
-  res.status(200).json(successResponse(response));
+  res.status(200).json(successResponse(users.map(toUserResponseDTO)));
 };
 
 export const getUserById = async (
@@ -24,14 +31,22 @@ export const getUserById = async (
   res: Response,
 ) => {
   const user = await userService.getUserByIdOrThrow(req.params.id);
-  const response = toUserResponseDTO(user);
-  res.status(200).json(successResponse(response));
+  res.status(200).json(successResponse(toUserResponseDTO(user)));
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const user = await userService.createUser(req.body);
-  const response = toUserResponseDTO(user);
-  res.status(201).json(successResponse(response));
+  const { password, confirmPassword, ...userData } = req.body;
+
+  if (password !== confirmPassword) {
+    throw new BadRequestError(
+      "Passwords do not match",
+      ErrorKeys.auth.passwordsDoNotMatch,
+    );
+  }
+
+  const user = await userService.createUser({ ...userData, password });
+
+  res.status(201).json(successResponse(toUserResponseDTO(user)));
 };
 
 export const updateUser = async (
@@ -39,8 +54,7 @@ export const updateUser = async (
   res: Response,
 ) => {
   const user = await userService.updateUser(req.params.id, req.body);
-  const response = toUserResponseDTO(user);
-  res.status(200).json(successResponse(response));
+  res.status(200).json(successResponse(toUserResponseDTO(user)));
 };
 
 export const deleteUser = async (
@@ -48,6 +62,5 @@ export const deleteUser = async (
   res: Response,
 ) => {
   const user = await userService.deleteUser(req.params.id);
-  const response = toUserResponseDTO(user);
-  res.status(200).json(successResponse(response));
+  res.status(200).json(successResponse(toUserResponseDTO(user)));
 };
