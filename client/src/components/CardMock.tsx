@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function CardMock({
   title = "Fibank - Checking",
   balance = "$6,421.82",
