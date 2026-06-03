@@ -6,12 +6,7 @@ import type { AuthRequest } from "../middleware/auth.js";
 import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
 
 export const register = async (req: Request, res: Response) => {
-  const { username: inputUsername, password } = req.body;
-
-  const authResponse: AuthResponseDTO = await authService.register({
-    username: inputUsername,
-    password,
-  });
+  const authResponse: AuthResponseDTO = await authService.register(req.body);
 
   res.cookie("token", authResponse.token, getJwtCookieOptions());
 
@@ -19,12 +14,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { username: inputUsername, password } = req.body;
-
-  const authResponse: AuthResponseDTO = await authService.login({
-    username: inputUsername,
-    password,
-  });
+  const authResponse: AuthResponseDTO = await authService.login(req.body);
 
   res.cookie("token", authResponse.token, getJwtCookieOptions());
 

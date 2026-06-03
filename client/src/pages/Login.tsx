@@ -69,10 +69,6 @@ export default function Login() {
             type="text"
             {...register("username", {
               required: t("errors.auth.usernameRequired"),
-              minLength: {
-                value: 3,
-                message: t("errors.generic.minLength", { count: 3 }),
-              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -95,10 +91,6 @@ export default function Login() {
             type="password"
             {...register("password", {
               required: t("errors.auth.passwordRequired"),
-              minLength: {
-                value: 6,
-                message: t("errors.generic.minLength", { count: 6 }),
-              },
             })}
             className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

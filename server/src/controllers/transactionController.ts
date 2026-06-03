@@ -5,7 +5,6 @@ import { UnauthorizedError } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import type { ITransaction } from "../models/Transaction.js";
 import type TransactionResponseDTO from "../dtos/transaction/TransactionResponseDTO.js";
-import type { IAccount } from "../models/Account.js";
 
 function toTransactionResponseDTO(tx: ITransaction): TransactionResponseDTO {
   const dto: TransactionResponseDTO = {
