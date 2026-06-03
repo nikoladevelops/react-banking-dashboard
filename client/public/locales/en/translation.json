@@ -3,7 +3,7 @@
   "nav": {
     "home": "Home",
     "mobileApp": "Mobile App",
-    "changesTariff": "Changes in OU and tariff",
+    "terms": "Changes in Terms and Tariff",
     "help": "Help",
     "profile": "Profile",
     "logout": "Logout",
@@ -153,5 +153,267 @@
     },
     "validation": { "invalidData": "Invalid data provided" },
     "server": { "internalServerError": "Internal server error" }
+  },
+
+  "brand": {
+    "name": "Fibank"
+  },
+
+  "home": {
+    "hero": {
+      "pretitle": "Welcome to Fibank",
+      "title": "Modern banking that works for you",
+      "subtitle": "Fibank is built for the way you live today - fast, secure, and thoughtful banking with clear pricing and delightful tools to help you reach your goals.",
+      "ctaStart": "Get started - it's free",
+      "ctaLearn": "Learn more"
+    },
+    "signup": {
+      "label": "Email address",
+      "placeholder": "Enter your email",
+      "signing": "Signing up...",
+      "notify": "Notify me",
+      "success": "Thanks - we'll be in touch!",
+      "error": "Please enter a valid email address."
+    },
+    "stats": {
+      "customers": { "value": "120k+", "label": "Customers" },
+      "aum": { "value": "$2.4B", "label": "Assets under management" },
+      "countries": { "value": "12", "label": "Countries" }
+    },
+    "card": {
+      "type": "Checking",
+      "available": "Available balance",
+      "updated": "Updated 5m ago",
+      "send": "Send",
+      "deposit": "Deposit",
+      "recent": "Recent",
+      "recent1": "Salary",
+      "recent1Amount": "+$3,200.00",
+      "recent2": "Groceries",
+      "recent2Amount": "-$74.21",
+      "recent3": "Utilities",
+      "recent3Amount": "-$120.00"
+    },
+    "features": {
+      "title": "Designed for real life",
+      "subtitle": "From everyday spending to long-term savings, Fibank brings you modern tools and human support.",
+      "secure": {
+        "title": "Secure by design",
+        "desc": "Bank-level encryption, multi-factor authentication, and real-time fraud monitoring keep your money safe."
+      },
+      "fast": {
+        "title": "Fast transfers",
+        "desc": "Instant transfers between Fibank accounts and fast settlement to external banks."
+      },
+      "mobile": {
+        "title": "Mobile-first experience",
+        "desc": "A beautiful, performant app - move money, deposit checks, and track spending from your phone."
+      },
+      "support": {
+        "title": "Customer-first support",
+        "desc": "24/7 support and a dedicated team ready to help with anything banking-related."
+      }
+    },
+    "accounts": {
+      "title": "Accounts for every need",
+      "subtitle": "Simple pricing, powerful features. Choose the account that's right for you.",
+      "checking": {
+        "title": "Everyday Checking",
+        "desc": "No monthly fee. Free debit card, ATM reimbursements.",
+        "price": "Free",
+        "feature1": "Free domestic transfers",
+        "feature2": "Debit card with cashback",
+        "feature3": "Basic budgeting tools",
+        "cta": "Open account"
+      },
+      "savings": {
+        "title": "Savings",
+        "desc": "High-yield savings to grow your emergency fund and goals.",
+        "price": "Up to 4.5% APY",
+        "feature1": "Automated transfers",
+        "feature2": "Goal tracking and insights",
+        "feature3": "Federally insured",
+        "cta": "Start saving"
+      },
+      "premium": {
+        "title": "Fibank Premium",
+        "desc": "Priority support, boosted rates, and exclusive benefits.",
+        "price": "$12 / mo",
+        "feature1": "Higher interest rates",
+        "feature2": "Travel benefits",
+        "feature3": "Dedicated onboarding",
+        "cta": "Upgrade"
+      }
+    },
+    "mobile": {
+      "title": "Your bank, on your phone",
+      "subtitle": "Full control of your money with a beautiful mobile app for iOS and Android.",
+      "feature1": {
+        "title": "Deposit checks on the go",
+        "desc": "Snap a photo and your funds are on their way."
+      },
+      "feature2": {
+        "title": "Quick transfers",
+        "desc": "Move money instantly to friends and family."
+      },
+      "feature3": {
+        "title": "Secure authentication",
+        "desc": "Face ID, fingerprint, and two-factor where available."
+      },
+      "accountType": "Personal",
+      "available": "Available",
+      "send": "Send",
+      "receive": "Receive"
+    },
+    "testimonials": {
+      "title": "What customers say",
+      "1": "\"Fibank made switching banks painless - and the app is actually delightful to use.\"",
+      "2": "\"Great rates on savings and support that responds. Highly recommend.\"",
+      "3": "\"I use Fibank every day for budgeting and paying bills - it's reliable and fast.\""
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "How long does it take to open an account?",
+      "a1": "Opening a Fibank account is quick. Most customers are approved within minutes and can start using their accounts right away.",
+      "q2": "Is my money insured?",
+      "a2": "Yes - Fibank partners with insured institutions to ensure deposits are protected according to applicable regulations.",
+      "q3": "Can I connect my accounts to third-party services?",
+      "a3": "You can securely connect your Fibank accounts to authorized third-party apps via our APIs and integrations."
+    }
+  },
+
+  "about": {
+    "hero": {
+      "title": "About Fibank",
+      "subtitle": "We build modern banking for everyone, with transparency and care."
+    },
+    "mission": {
+      "title": "Our mission",
+      "content": "To simplify money for people - better tools, fair pricing, and outstanding service."
+    },
+    "values": {
+      "title": "Our values",
+      "v1": "Security first",
+      "v2": "Customer obsession",
+      "v3": "Simplicity"
+    },
+    "team": {
+      "title": "The team",
+      "content": "A small team of engineers, designers, and bankers dedicated to great products."
+    },
+    "cta": { "title": "Join us", "button": "Careers" },
+    "why": {
+      "title": "Why Fibank",
+      "p1": "We focus on security and user experience.",
+      "p2": "Transparent pricing and no hidden fees.",
+      "p3": "Fast onboarding and human support when you need it."
+    },
+    "teamMembers": {
+      "member1": {
+        "name": "A. Ramirez",
+        "role": "CEO",
+        "bio": "Leads the product and vision with 10+ years in fintech."
+      },
+      "member2": {
+        "name": "J. Patel",
+        "role": "Head of Engineering",
+        "bio": "Builds reliable systems and developer-friendly APIs."
+      },
+      "member3": {
+        "name": "S. Lee",
+        "role": "Head of Support",
+        "bio": "Ensures customers get timely, helpful assistance."
+      }
+    }
+  },
+
+  "help": {
+    "hero": {
+      "title": "Help & Support",
+      "subtitle": "We're here to help - find answers or contact support."
+    },
+    "support": {
+      "title": "Contact support",
+      "content": "Email us at support@fibank.example or call +1 (555) 123-4567.",
+      "hours": "Support hours: Mon-Fri 8:00-18:00 UTC"
+    },
+    "faq": {
+      "title": "Popular questions",
+      "q1": "How do I reset my password?",
+      "a1": "Use the 'Forgot password' link on the login page.",
+      "q2": "How do I close my account?",
+      "a2": "Contact support to request account closure.",
+      "q3": "How do I report fraud?",
+      "a3": "Contact support immediately and freeze your card."
+    }
+  },
+
+  "mobile": {
+    "hero": {
+      "title": "Fibank on mobile",
+      "subtitle": "Banking on the go: fast, secure, and delightful."
+    },
+    "features": {
+      "title": "Mobile features",
+      "f1": "Instant transfers",
+      "f2": "Remote check deposit",
+      "f3": "Secure biometric login"
+    },
+    "cta": { "download": "Download the app" },
+    "store": {
+      "ios": "Download on the App Store",
+      "android": "Get it on Google Play"
+    }
+  },
+
+  "notfound": {
+    "code": "404",
+    "message": "Page not found",
+    "goHome": "Go home"
+  },
+
+  "loading": {
+    "loading": "Loading...",
+    "message": "Please wait while we load your content."
+  },
+
+  "terms": {
+    "title": "Terms and Conditions",
+    "intro": "These are sample terms. Replace with your legal text.",
+    "section1": {
+      "title": "Usage",
+      "content": "By using Fibank you agree to these terms."
+    },
+    "section2": {
+      "title": "Privacy",
+      "content": "We respect your privacy and protect your data."
+    },
+    "liability": {
+      "title": "Liability",
+      "content": "Fibank is not liable for indirect damages - please consult the full terms."
+    },
+    "governing": {
+      "title": "Governing law",
+      "content": "These terms are governed by the laws of the jurisdiction where Fibank operates."
+    }
+  },
+
+  "footer": {
+    "title": "Fibank",
+    "description": "Simple banking, thoughtful tools, and a team that cares.",
+    "product": {
+      "title": "Product",
+      "accounts": "Accounts",
+      "pricing": "Pricing",
+      "security": "Security"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About",
+      "careers": "Careers",
+      "blog": "Blog"
+    },
+    "rights": "All rights reserved",
+    "built": "Built with care • Terms • Privacy"
   }
 }

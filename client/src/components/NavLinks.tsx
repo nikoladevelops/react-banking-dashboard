@@ -23,8 +23,8 @@ export default function NavLinks({ className }: NavLinksProps) {
       <NavButton to="/mobile" SvgIcon={Apple} SvgIcon2={Android}>
         {t("nav.mobileApp")}
       </NavButton>
-      <NavButton to="/changes" SvgIcon={Clipboard}>
-        {t("nav.changesTariff")}
+      <NavButton to="/terms" SvgIcon={Clipboard}>
+        {t("nav.terms")}
       </NavButton>
       <NavButton to="/help" SvgIcon={Info}>
         {t("nav.help")}
