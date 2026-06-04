@@ -9,6 +9,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { validateEnv } from "./utils/envValidator.js";
 import accountRoutes from "./routes/accountRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
+import { seedAdmin } from "./utils/dataSeeder.js";
 
 dotenv.config();
 
@@ -45,10 +46,11 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 
 connectDB(MONGO_URI)
-  .then(() => {
+  .then(async () => {
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
     });
+    await seedAdmin();
   })
   .catch((err) => {
     console.error(err.message);
