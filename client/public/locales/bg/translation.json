@@ -5,6 +5,7 @@
     "mobileApp": "Мобилно Приложение",
     "terms": "Промени в ОУ и Тарифа",
     "help": "Помощ",
+    "settings": "Настройки",
     "profile": "Профил",
     "logout": "Изход",
     "register": "Регистрация",
@@ -62,6 +63,20 @@
       "next": "Следваща",
       "page": "Страница"
     }
+  },
+  "settings": {
+    "title": "Настройки",
+    "username": "Име на потребител",
+    "role": "Роля",
+    "email": "Имейл",
+    "egn": "ЕГН",
+    "identityDoc": "ЛНЧ или паспорт",
+    "fullNameCyrillic": "Пълно име (Кирилски)",
+    "fullNameLatin": "Пълно име (Латиниски)",
+    "createdAt": "Създадено на",
+    "status": "Статус",
+    "active": "Активен",
+    "blocked": "Заблокиран"
   },
   "modals": {
     "createAccount": {

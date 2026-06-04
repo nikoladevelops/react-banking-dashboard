@@ -7,18 +7,25 @@ import { BadRequestError } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 
 function toUserResponseDTO(user: IUser): UserResponseDTO {
-  return {
+  const dto: UserResponseDTO = {
     id: user._id.toString(),
     username: user.username,
+    role: user.role,
+    isBlocked: user.isBlocked,
+    egn: user.egn,
+
     email: user.email,
     fullNameLatin: user.fullNameLatin,
     fullNameCyrillic: user.fullNameCyrillic,
-    isBlocked: user.isBlocked,
-    role: user.role,
-    egn: user.egn,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
+
+  if (user.identityDoc) {
+    dto.identityDoc = user.identityDoc;
+  }
+
+  return dto;
 }
 
 export const getAllUsers = async (req: Request, res: Response) => {

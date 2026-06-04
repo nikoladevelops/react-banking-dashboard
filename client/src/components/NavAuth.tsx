@@ -3,6 +3,8 @@ import LogoutButton from "./LogoutButton";
 import { useTranslation } from "react-i18next";
 import { useUserStore } from "../userStore";
 import { useUIStore } from "../uiStore";
+import NavButton from "./NavButton";
+import Settings from "../assets/navbar/settings.svg?react";
 
 export default function NavAuth({ className }) {
   const { t } = useTranslation();
@@ -38,6 +40,9 @@ export default function NavAuth({ className }) {
           >
             {t("nav.profile")}
           </NavLink>
+          <NavButton to="/settings" SvgIcon={Settings}>
+            {t("nav.settings")}
+          </NavButton>
           <LogoutButton />
         </>
       )}
