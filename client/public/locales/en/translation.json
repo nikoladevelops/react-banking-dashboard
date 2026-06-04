@@ -76,7 +76,9 @@
     "createdAt": "Account Created",
     "status": "Status",
     "active": "Active",
-    "blocked": "Blocked"
+    "blocked": "Blocked",
+    "block": "Block",
+    "unblock": "Unblock"
   },
   "modals": {
     "createAccount": {
@@ -129,14 +131,18 @@
       "emailInvalid": "Should be a valid email address",
       "phoneInvalid": "Should be a valid phone number (7-15 digits long)",
       "addressInvalid": "Should contain at least 5 characters",
-      "accountBlocked": "Account is blocked. Contact support to unblock it."
+      "accountBlocked": "Account is blocked. Contact support to unblock it.",
+      "cantBlockOwnAccount": "You cannot block your own account",
+      "cantUnblockOwnAccount": "You cannot unblock your own account"
     },
     "users": {
       "userNotFound": "User not found",
       "invalidUserId": "Invalid user ID",
       "usernameRequired": "Username is required",
       "passwordRequired": "Password is required",
-      "updateFieldsRequired": "The update fields are required"
+      "updateFieldsRequired": "The update fields are required",
+      "userAlreadyBlocked": "User is already blocked",
+      "userAlreadyActive": "User is already active"
     },
     "accounts": {
       "notFound": "Account not found",

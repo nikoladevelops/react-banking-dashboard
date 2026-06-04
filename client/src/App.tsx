@@ -16,6 +16,7 @@ import Mobile from "./pages/Mobile.js";
 import Terms from "./pages/Terms.js";
 import Help from "./pages/Help.js";
 import Settings from "./pages/Settings.js";
+import UserInfo from "./pages/UserInfo.js";
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -72,6 +73,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users/:username"
+              element={
+                <ProtectedRoute>
+                  <UserInfo />
                 </ProtectedRoute>
               }
             />

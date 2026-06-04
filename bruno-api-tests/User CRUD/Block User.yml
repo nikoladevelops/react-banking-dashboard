@@ -1,0 +1,20 @@
+info:
+  name: Block User
+  type: http
+  seq: 7
+
+http:
+  method: PATCH
+  url: "{{baseURL}}/api/users/block/{{userToBlock}}"
+  auth: inherit
+
+runtime:
+  variables:
+    - name: userToBlock
+      value: nikich3
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

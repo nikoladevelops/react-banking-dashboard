@@ -6,9 +6,11 @@ import userRepository from "../repositories/userRepository.js";
 import {
   BadRequestError,
   ConflictError,
+  ForbiddenError,
   NotFoundError,
 } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
+import type { UserSearchFiltersDTO } from "../dtos/user/UserSearchFiltersDTO.js";
 
 function isValidObjectId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
@@ -24,8 +26,24 @@ export const getUserByUsername = async (
   return await userRepository.findByUsername(username);
 };
 
+export const getUserByUsernameOrThrow = async (
+  username: string,
+): Promise<IUser> => {
+  const user = await getUserByUsername(username);
+  if (!user) {
+    throw new NotFoundError("User not found", ErrorKeys.users.userNotFound);
+  }
+  return user;
+};
+
 export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   return await userRepository.findByEmail(email);
+};
+
+export const findUsers = async (
+  filters: UserSearchFiltersDTO,
+): Promise<IUser[]> => {
+  return await userRepository.findUsers(filters);
 };
 
 export const getUserByIdOrThrow = async (id: string): Promise<IUser> => {
@@ -125,4 +143,32 @@ export const deleteUser = async (id: string): Promise<IUser> => {
   }
 
   return deleted;
+};
+
+export const blockUserByUsername = async (
+  loggedInUsername: string,
+  username: string,
+): Promise<IUser> => {
+  if (loggedInUsername === username) {
+    throw new ForbiddenError(
+      "You cannot block your own account",
+      ErrorKeys.auth.cantBlockOwnAccount,
+    );
+  }
+
+  return await userRepository.blockUserByUsername(username);
+};
+
+export const unblockUserByUsername = async (
+  loggedInUsername: string,
+  username: string,
+): Promise<IUser> => {
+  if (loggedInUsername === username) {
+    throw new ForbiddenError(
+      "You cannot unblock your own account",
+      ErrorKeys.auth.cantUnblockOwnAccount,
+    );
+  }
+
+  return await userRepository.unblockUserByUsername(username);
 };

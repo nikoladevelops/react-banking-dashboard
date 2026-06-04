@@ -16,6 +16,8 @@ export const ErrorKeys = {
     nameLatinInvalid: "auth.nameLatinInvalid",
     phoneInvalid: "auth.phoneInvalid",
     addressInvalid: "auth.addressInvalid",
+    cantBlockOwnAccount: "auth.cantBlockOwnAccount",
+    cantUnblockOwnAccount: "auth.cantUnblockOwnAccount",
   },
   users: {
     userNotFound: "users.userNotFound",
@@ -25,6 +27,8 @@ export const ErrorKeys = {
     updateFieldsRequired: "users.updateFieldsRequired",
     missingRequiredFields: "users.missingRequiredFields",
     emailAlreadyTaken: "users.emailAlreadyTaken",
+    userAlreadyBlocked: "users.userAlreadyBlocked",
+    userAlreadyActive: "users.userAlreadyActive",
   },
   accounts: {
     notFound: "accounts.notFound",

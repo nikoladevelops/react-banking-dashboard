@@ -2,15 +2,15 @@ import { type Request, type Response, type NextFunction } from "express";
 import { verifyToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
-import { UnauthorizedError } from "../utils/errors.js";
+import { ForbiddenError, UnauthorizedError } from "../utils/errors.js";
 
-export interface AuthRequest extends Request {
+export type AuthRequest<Params = any> = Request<Params> & {
   user?: {
     id: string;
     username: string;
     role: string;
   };
-}
+};
 
 export const protect = async (
   req: AuthRequest,
@@ -36,6 +36,13 @@ export const protect = async (
   const user = await getUserById(tokenPayload.id);
   if (!user) {
     throw new UnauthorizedError("User not found", ErrorKeys.users.userNotFound);
+  }
+
+  if (user.isBlocked) {
+    throw new UnauthorizedError(
+      "Account is blocked",
+      ErrorKeys.auth.accountBlocked,
+    );
   }
 
   req.user = {
