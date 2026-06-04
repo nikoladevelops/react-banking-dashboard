@@ -11,6 +11,7 @@ import type CreateUserDTO from "../dtos/user/CreateUserDTO.js";
 import { generateToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
 import type LoginUserDTO from "../dtos/auth/LoginUserDTO.js";
 import type AuthResponseDTO from "../dtos/auth/AuthResponseDTO.js";
+import { Role } from "../enums/role.enum.js";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const cyrillicRegex = /^[\u0400-\u04FF\s]+$/;
@@ -111,7 +112,10 @@ export const register = async (
     );
   }
 
-  const newUser = await userService.createUser(registerData as CreateUserDTO);
+  const newUser = await userService.createUser({
+    ...registerData,
+    role: Role.USER,
+  });
 
   const payload: AuthTokenPayload = {
     id: newUser._id.toString(),

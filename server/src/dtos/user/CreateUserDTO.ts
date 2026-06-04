@@ -1,3 +1,5 @@
+import type { Role } from "../../enums/role.enum.js";
+
 export default interface CreateUserDTO {
   username: string;
   password: string;
@@ -8,4 +10,5 @@ export default interface CreateUserDTO {
   email: string;
   phone: string;
   address: string;
+  role: Role;
 }
