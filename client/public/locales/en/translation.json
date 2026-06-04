@@ -64,6 +64,20 @@
       "page": "Page"
     }
   },
+  "settings": {
+    "title": "Settings",
+    "username": "Username",
+    "role": "Role",
+    "email": "Email",
+    "egn": "EGN",
+    "identityDoc": "LNCH or Passport",
+    "fullNameCyrillic": "Full Name (Cyrillic)",
+    "fullNameLatin": "Full Name (Latin)",
+    "createdAt": "Account Created",
+    "status": "Status",
+    "active": "Active",
+    "blocked": "Blocked"
+  },
   "modals": {
     "createAccount": {
       "title": "Create New Account",
