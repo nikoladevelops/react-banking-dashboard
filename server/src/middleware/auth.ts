@@ -4,13 +4,13 @@ import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
 import { ForbiddenError, UnauthorizedError } from "../utils/errors.js";
 
-export type AuthRequest<Params = any> = Request<Params> & {
+export interface AuthRequest extends Request {
   user?: {
     id: string;
     username: string;
     role: string;
   };
-};
+}
 
 export const protect = async (
   req: AuthRequest,
@@ -39,8 +39,8 @@ export const protect = async (
   }
 
   if (user.isBlocked) {
-    throw new UnauthorizedError(
-      "Account is blocked",
+    throw new ForbiddenError(
+      "User account is blocked",
       ErrorKeys.auth.accountBlocked,
     );
   }

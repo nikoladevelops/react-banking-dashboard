@@ -133,7 +133,8 @@
       "addressInvalid": "Should contain at least 5 characters",
       "accountBlocked": "Account is blocked. Contact support to unblock it.",
       "cantBlockOwnAccount": "You cannot block your own account",
-      "cantUnblockOwnAccount": "You cannot unblock your own account"
+      "cantUnblockOwnAccount": "You cannot unblock your own account",
+      "forbiddenAccessToResource": "You do not have permission to access this resource"
     },
     "users": {
       "userNotFound": "User not found",
