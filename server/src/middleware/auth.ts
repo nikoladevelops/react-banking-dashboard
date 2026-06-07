@@ -1,8 +1,9 @@
 import { type Request, type Response, type NextFunction } from "express";
 import { verifyToken, type AuthTokenPayload } from "../utils/jwtHelper.js";
+import { Role } from "../enums/role.enum.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
-import { UnauthorizedError } from "../utils/errors.js";
+import { ForbiddenError, UnauthorizedError } from "../utils/errors.js";
 
 export interface AuthRequest extends Request {
   user?: {
@@ -12,11 +13,7 @@ export interface AuthRequest extends Request {
   };
 }
 
-export const protect = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+const authenticate = async (req: AuthRequest, res: Response) => {
   const token = req.cookies?.token;
 
   if (!token) {
@@ -29,7 +26,7 @@ export const protect = async (
   let tokenPayload: AuthTokenPayload;
   try {
     tokenPayload = verifyToken(token);
-  } catch (err) {
+  } catch {
     throw new UnauthorizedError("Invalid token", ErrorKeys.auth.tokenInvalid);
   }
 
@@ -38,11 +35,42 @@ export const protect = async (
     throw new UnauthorizedError("User not found", ErrorKeys.users.userNotFound);
   }
 
+  if (user.isBlocked) {
+    throw new ForbiddenError(
+      "User account is blocked",
+      ErrorKeys.auth.accountBlocked,
+    );
+  }
+
   req.user = {
     id: user._id.toString(),
     username: user.username,
     role: user.role,
   };
+};
+
+export const protect = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  await authenticate(req, res);
+  next();
+};
+
+export const adminProtect = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  await authenticate(req, res);
+
+  if (req.user?.role !== Role.ADMIN) {
+    throw new ForbiddenError(
+      "Admin privileges required",
+      ErrorKeys.auth.forbiddenAccessToResource,
+    );
+  }
 
   next();
 };

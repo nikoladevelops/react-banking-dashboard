@@ -5,10 +5,10 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { useEffect } from "react";
 import Profile from "./pages/Profile";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/navigationBar/NavBar.js";
 import { useUserStore } from "./userStore.js";
-import ProtectedRoute from "./components/ProtectedRoute.js";
-import GuestOnlyRoute from "./components/GuestOnlyRoute.js";
+import ProtectedRoute from "./components/routeProtections/ProtectedRoute.js";
+import GuestOnlyRoute from "./components/routeProtections/GuestOnlyRoute.js";
 import NotFound from "./pages/NotFound.js";
 import Loading from "./pages/Loading.js";
 import About from "./pages/About.js";
@@ -16,6 +16,8 @@ import Mobile from "./pages/Mobile.js";
 import Terms from "./pages/Terms.js";
 import Help from "./pages/Help.js";
 import Settings from "./pages/Settings.js";
+import UserInfo from "./pages/UserInfo.js";
+import AdminOnlyRoute from "./components/routeProtections/AdminOnlyRoute.js";
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -73,6 +75,14 @@ function App() {
                 <ProtectedRoute>
                   <Settings />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users/:username"
+              element={
+                <AdminOnlyRoute>
+                  <UserInfo />
+                </AdminOnlyRoute>
               }
             />
 

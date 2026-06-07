@@ -1,6 +1,6 @@
-import FibankLogo from "../assets/navbar/fibank-logo-white.svg?react";
+import FibankLogo from "../../assets/navbar/fibank-logo-white.svg?react";
 import { Link } from "react-router";
-import { useUIStore } from "../uiStore";
+import { useUIStore } from "../../uiStore";
 
 interface NavLogoProps {
   logoWidth?: number;

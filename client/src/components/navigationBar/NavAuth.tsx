@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 import LogoutButton from "./LogoutButton";
 import { useTranslation } from "react-i18next";
-import { useUserStore } from "../userStore";
-import { useUIStore } from "../uiStore";
+import { useUserStore } from "../../userStore";
+import { useUIStore } from "../../uiStore";
 import NavButton from "./NavButton";
-import Settings from "../assets/navbar/settings.svg?react";
+import Settings from "../../assets/navbar/settings.svg?react";
 
 export default function NavAuth({ className }) {
   const { t } = useTranslation();
