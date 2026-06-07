@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { initDarkMode, setDarkModePreference } from "../utility/darkMode";
+import { initDarkMode, setDarkModePreference } from "../../utility/darkMode";
 
 export default function DarkModeToggle() {
   const { t } = useTranslation();

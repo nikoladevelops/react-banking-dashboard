@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { type ComponentType, type SVGProps } from "react";
-import { useUIStore } from "../uiStore";
+import { useUIStore } from "../../uiStore";
 
 interface NavButtonProps {
   to: string;

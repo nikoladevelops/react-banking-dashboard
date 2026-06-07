@@ -1,10 +1,10 @@
 import NavLogo from "./NavLogo.js";
 import NavLinks from "./NavLinks.js";
 import NavAuth from "./NavAuth.js";
-import MenuBurger from "../assets/navbar/menu-burger.svg?react";
-import Close from "../assets/navbar/close.svg?react";
+import MenuBurger from "../../assets/navbar/menu-burger.svg?react";
+import Close from "../../assets/navbar/close.svg?react";
 
-import { useUIStore } from "../uiStore.js";
+import { useUIStore } from "../../uiStore.js";
 
 export default function NavBar() {
   const isMainNavOpen = useUIStore((state) => state.isMainNavOpen);

@@ -1,9 +1,9 @@
-import Logout from "../assets/navbar/shutdown.svg?react";
+import Logout from "../../assets/navbar/shutdown.svg?react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import api from "../api/axiosInstance.js";
-import { useUserStore } from "../userStore.js";
-import { useUIStore } from "../uiStore.js";
+import api from "../../api/axiosInstance.js";
+import { useUserStore } from "../../userStore.js";
+import { useUIStore } from "../../uiStore.js";
 
 export default function LogoutButton() {
   const { t } = useTranslation();

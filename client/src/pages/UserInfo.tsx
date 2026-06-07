@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import type { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 import {
   useUserByUsername,
@@ -36,7 +36,9 @@ const UserInfo = () => {
   }, [fullUserData, reset]);
 
   const handleToggleBlock = () => {
-    if (!username) return;
+    if (!username) {
+      return;
+    }
     setErrorMessage(null);
 
     const action = fullUserData?.isBlocked ? unblockUser : blockUser;
@@ -56,8 +58,11 @@ const UserInfo = () => {
   const labelClass = "font-medium text-gray-700 dark:text-white text-sm";
 
   if (isLoading) return <div className="p-4">{t("loading.loading")}</div>;
-  if (fetchError)
-    return <div className="p-4 text-red-500">{fetchError.message}</div>;
+  if (fetchError) {
+    const axiosError = fetchError as AxiosError<ApiResponse>;
+    const errMsg = axiosError.response?.data?.errorCode || fetchError.message;
+    return <div className="p-4 text-red-500">{t(`errors.${errMsg}`)}</div>;
+  }
 
   return (
     <div className="flex items-center justify-center p-4 mb-24">

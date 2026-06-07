@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
-import { useUserStore } from "../userStore";
+import { useUserStore } from "../../userStore";
 import { type ReactNode } from "react";
-import Loading from "../pages/Loading";
+import Loading from "../../pages/Loading";
 
 interface GuestOnlyRouteProps {
   children: ReactNode;
