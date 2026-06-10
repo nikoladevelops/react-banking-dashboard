@@ -5,7 +5,12 @@ import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
 import { ForbiddenError, UnauthorizedError } from "../utils/errors.js";
 
-export interface AuthRequest extends Request {
+export interface AuthRequest<
+  P = any,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = any,
+> extends Request<P, ResBody, ReqBody, ReqQuery> {
   user?: {
     id: string;
     username: string;

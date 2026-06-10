@@ -1,24 +1,34 @@
 import { Router } from "express";
 import * as userController from "../controllers/userController.js";
-import { adminProtect } from "../middleware/auth.js";
+import { adminProtect, protect } from "../middleware/auth.js";
 const router = Router();
 
-router.use(adminProtect);
+router.get("/", adminProtect, userController.getAllUsers);
 
-router.get("/", userController.getAllUsers);
+router.get("/:id", protect, userController.getUserById);
 
-router.get("/:id", userController.getUserById);
+router.get(
+  "/username/:username",
+  adminProtect,
+  userController.getUserByUsername,
+);
 
-router.get("/username/:username", userController.getUserByUsername);
+router.patch(
+  "/block/:username",
+  adminProtect,
+  userController.blockUserByUsername,
+);
 
-router.patch("/block/:username", userController.blockUserByUsername);
+router.patch(
+  "/unblock/:username",
+  adminProtect,
+  userController.unblockUserByUsername,
+);
 
-router.patch("/unblock/:username", userController.unblockUserByUsername);
+router.post("/", adminProtect, userController.createUser);
 
-router.post("/", userController.createUser);
+router.patch("/:id", adminProtect, userController.updateUser);
 
-router.patch("/:id", userController.updateUser);
-
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", adminProtect, userController.deleteUser);
 
 export default router;
