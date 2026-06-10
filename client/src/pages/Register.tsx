@@ -271,7 +271,7 @@ export default function Register() {
 
         {errorCode && (
           <p className="text-red-500 text-center text-sm">
-            {t(`errors.auth.${errorCode}`)}
+            {t(`errors.${errorCode}`)}
           </p>
         )}
 

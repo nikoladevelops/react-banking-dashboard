@@ -4,6 +4,7 @@ import { Role } from "../enums/role.enum.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import { getUserById } from "../services/userService.js";
 import { ForbiddenError, UnauthorizedError } from "../utils/errors.js";
+import type { UserContext } from "../types/userContext.js";
 
 export interface AuthRequest<
   P = any,
@@ -11,11 +12,7 @@ export interface AuthRequest<
   ReqBody = any,
   ReqQuery = any,
 > extends Request<P, ResBody, ReqBody, ReqQuery> {
-  user?: {
-    id: string;
-    username: string;
-    role: string;
-  };
+  user?: UserContext;
 }
 
 const authenticate = async (req: AuthRequest, res: Response) => {

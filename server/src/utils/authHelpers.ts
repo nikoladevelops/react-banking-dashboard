@@ -15,9 +15,5 @@ export const getAuthenticatedUser = (req: AuthRequest): UserContext => {
     throw new UnauthorizedError("Unauthorized", ErrorKeys.auth.invalidRole);
   }
 
-  return {
-    id: req.user.id,
-    username: req.user.username,
-    role: req.user.role as Role,
-  };
+  return req.user;
 };
