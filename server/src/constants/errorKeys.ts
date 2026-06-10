@@ -19,6 +19,7 @@ export const ErrorKeys = {
     cantBlockOwnAccount: "auth.cantBlockOwnAccount",
     cantUnblockOwnAccount: "auth.cantUnblockOwnAccount",
     forbiddenAccessToResource: "auth.forbiddenAccessToResource",
+    invalidRole: "auth.invalidRole",
   },
   users: {
     userNotFound: "users.userNotFound",

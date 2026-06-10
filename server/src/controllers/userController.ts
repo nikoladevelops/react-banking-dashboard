@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express";
+import { type Response } from "express";
 import * as userService from "../services/userService.js";
 import { successResponse } from "../utils/response.js";
 import type { IUser } from "../models/User.js";
@@ -8,6 +8,7 @@ import { ErrorKeys } from "../constants/errorKeys.js";
 import type { UserSearchFiltersDTO } from "../dtos/user/UserSearchFiltersDTO.js";
 import { Role } from "../enums/role.enum.js";
 import type { AuthRequest } from "../middleware/auth.js";
+import { getAuthenticatedUser } from "../utils/authHelpers.js";
 
 function toUserResponseDTO(user: IUser): UserResponseDTO {
   const dto: UserResponseDTO = {
@@ -31,7 +32,7 @@ function toUserResponseDTO(user: IUser): UserResponseDTO {
   return dto;
 }
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: AuthRequest, res: Response) => {
   const {
     username,
     email,
@@ -81,15 +82,27 @@ export const getAllUsers = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (
-  req: Request<{ id: string }>,
+  req: AuthRequest<{ id: string }>,
   res: Response,
 ) => {
+  const actor = getAuthenticatedUser(req);
+
+  const isOwner = actor.id === req.params.id;
+  const isAdmin = actor.role === Role.ADMIN;
+
+  if (!isOwner && !isAdmin) {
+    throw new UnauthorizedError(
+      "You are not authorized to perform this action.",
+      ErrorKeys.auth.forbiddenAccessToResource,
+    );
+  }
+
   const user = await userService.getUserByIdOrThrow(req.params.id);
   res.status(200).json(successResponse(toUserResponseDTO(user)));
 };
 
 export const getUserByUsername = async (
-  req: Request<{ username: string }>,
+  req: AuthRequest<{ username: string }>,
   res: Response,
 ) => {
   const user = await userService.getUserByUsernameOrThrow(req.params.username);
@@ -97,7 +110,7 @@ export const getUserByUsername = async (
   res.status(200).json(successResponse(toUserResponseDTO(user)));
 };
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: AuthRequest, res: Response) => {
   const { password, confirmPassword, ...userData } = req.body;
 
   if (password !== confirmPassword) {
@@ -113,7 +126,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (
-  req: Request<{ id: string }>,
+  req: AuthRequest<{ id: string }>,
   res: Response,
 ) => {
   const user = await userService.updateUser(req.params.id, req.body);
@@ -121,7 +134,7 @@ export const updateUser = async (
 };
 
 export const deleteUser = async (
-  req: Request<{ id: string }>,
+  req: AuthRequest<{ id: string }>,
   res: Response,
 ) => {
   const user = await userService.deleteUser(req.params.id);
@@ -132,14 +145,10 @@ export const blockUserByUsername = async (
   req: AuthRequest<{ username: string }>,
   res: Response,
 ) => {
-  const loggedInUsername = req.user?.username;
-
-  if (!loggedInUsername) {
-    throw new UnauthorizedError("Unauthorized", ErrorKeys.auth.tokenMissing);
-  }
+  const actor = getAuthenticatedUser(req);
 
   const user = await userService.blockUserByUsername(
-    loggedInUsername,
+    actor,
     req.params.username,
   );
   res.status(200).json(successResponse(toUserResponseDTO(user)));
@@ -149,14 +158,10 @@ export const unblockUserByUsername = async (
   req: AuthRequest<{ username: string }>,
   res: Response,
 ) => {
-  const loggedInUsername = req.user?.username;
-
-  if (!loggedInUsername) {
-    throw new UnauthorizedError("Unauthorized", ErrorKeys.auth.tokenMissing);
-  }
+  const actor = getAuthenticatedUser(req);
 
   const user = await userService.unblockUserByUsername(
-    loggedInUsername,
+    actor,
     req.params.username,
   );
 

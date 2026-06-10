@@ -134,7 +134,8 @@
       "accountBlocked": "Акаунтът е блокиран. Свържете се с поддръжката за помощ.",
       "cantBlockOwnAccount": "Не можете да блокирате собственият си акаунт",
       "cantUnblockOwnAccount": "Не можете да отблокирате собственият си акаунт",
-      "forbiddenAccessToResource": "Нямате права за достъп до този ресурс"
+      "forbiddenAccessToResource": "Нямате права за достъп до този ресурс",
+      "invalidRole": "Невалидна роля"
     },
     "users": {
       "userNotFound": "Потребителят не е намерен",

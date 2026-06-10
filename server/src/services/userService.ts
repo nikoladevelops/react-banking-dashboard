@@ -11,6 +11,7 @@ import {
 } from "../utils/errors.js";
 import { ErrorKeys } from "../constants/errorKeys.js";
 import type { UserSearchFiltersDTO } from "../dtos/user/UserSearchFiltersDTO.js";
+import type { UserContext } from "../types/userContext.js";
 
 function isValidObjectId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
@@ -146,10 +147,10 @@ export const deleteUser = async (id: string): Promise<IUser> => {
 };
 
 export const blockUserByUsername = async (
-  loggedInUsername: string,
+  actor: UserContext,
   username: string,
 ): Promise<IUser> => {
-  if (loggedInUsername === username) {
+  if (actor.username === username) {
     throw new ForbiddenError(
       "You cannot block your own account",
       ErrorKeys.auth.cantBlockOwnAccount,
@@ -160,10 +161,10 @@ export const blockUserByUsername = async (
 };
 
 export const unblockUserByUsername = async (
-  loggedInUsername: string,
+  actor: UserContext,
   username: string,
 ): Promise<IUser> => {
-  if (loggedInUsername === username) {
+  if (actor.username === username) {
     throw new ForbiddenError(
       "You cannot unblock your own account",
       ErrorKeys.auth.cantUnblockOwnAccount,
